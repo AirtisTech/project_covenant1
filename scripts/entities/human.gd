@@ -28,10 +28,10 @@ func _ready():
 	_setup_visuals()
 
 func _setup_visuals():
-	# 身体
+	# 身体 - 调整为与甲板楼层比例适当的大小
 	var body = ColorRect.new()
-	body.size = Vector2(24, 34)
-	body.position = Vector2(-12, -27)
+	body.size = Vector2(16, 18)  # 原来是 24x34，太大
+	body.position = Vector2(-8, -18)
 	body.color = Color.RED
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(body)
@@ -40,7 +40,7 @@ func _setup_visuals():
 	var area = Area2D.new()
 	var col = CollisionShape2D.new()
 	var shape = RectangleShape2D.new()
-	shape.size = Vector2(50, 70)
+	shape.size = Vector2(30, 40)  # 缩小碰撞区
 	col.shape = shape
 	area.add_child(col)
 	add_child(area)
@@ -48,28 +48,29 @@ func _setup_visuals():
 	
 	# 选中视觉
 	selection_visual = ColorRect.new()
-	selection_visual.size = Vector2(30, 6)
-	selection_visual.position = Vector2(-15, 12)
+	selection_visual.size = Vector2(20, 4)
+	selection_visual.position = Vector2(-10, 8)
 	selection_visual.color = Color.CYAN
 	selection_visual.visible = false
 	add_child(selection_visual)
 	
 	# 体力条
 	var bar_bg = ColorRect.new()
-	bar_bg.size = Vector2(30, 4)
-	bar_bg.position = Vector2(-15, -35)
+	bar_bg.size = Vector2(20, 3)
+	bar_bg.position = Vector2(-10, -24)
 	bar_bg.color = Color.BLACK
 	add_child(bar_bg)
 	
 	stamina_bar = ColorRect.new()
-	stamina_bar.size = Vector2(30, 4)
-	stamina_bar.position = Vector2(-15, -35)
+	stamina_bar.size = Vector2(20, 3)
+	stamina_bar.position = Vector2(-10, -24)
 	stamina_bar.color = Color.GREEN
 	add_child(stamina_bar)
 	
 	var label = Label.new()
 	label.text = agent_name
-	label.position = Vector2(-20, -60)
+	label.position = Vector2(-12, -38)
+	label.add_theme_font_size_override("font_size", 10)  # 缩小字体
 	add_child(label)
 
 func _on_input_event(_viewport, event, _idx):
