@@ -31,6 +31,7 @@ GameManager="*res://scripts/globals/game_manager.gd"
 SelectionManager="*res://scripts/globals/selection_manager.gd"
 LayoutManager="*res://scripts/globals/layout_manager.gd"
 HapticManager="*res://scripts/globals/haptic_manager.gd"
+WeatherEffects="*res://scripts/world/weather_effects.gd"
 
 [display]
 

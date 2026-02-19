@@ -38,6 +38,7 @@ signal flood_level_changed(level: float)
 signal ark_tilt_changed(tilt: float)
 signal ark_weight_changed(weight: float)
 signal entered_ark()  # 家人登船
+signal weather_intensity_changed(intensity: float)
 
 func _ready():
 	print("🎯 准备阶段 - 规划你的方舟布局")
@@ -138,10 +139,26 @@ func _update_waves(delta):
 	# 简单的正弦波
 
 func _update_weather(delta):
-	# 随机暴风雨
-	if randf() < 0.001:  # 小概率触发
-		is_storming = !is_storming
-		weather_intensity = randf() * 0.5 + 0.5 if is_storming else 0.0
+	# 天气变化
+	if is_storming:
+		# 暴风雨时，随机变化强度
+		if randf() < 0.01:
+			weather_intensity = clamp(weather_intensity + randf_range(-0.2, 0.2), 0.3, 1.0)
+			weather_intensity_changed.emit(weather_intensity)
+		
+		# 小概率暴风雨结束
+		if randf() < 0.005:
+			is_storming = false
+			weather_intensity = 0.0
+			weather_intensity_changed.emit(0.0)
+			print("☀️ 暴风雨结束")
+	else:
+		# 平静时小概率起暴风雨
+		if randf() < 0.002:
+			is_storming = true
+			weather_intensity = randf_range(0.3, 0.6)
+			weather_intensity_changed.emit(weather_intensity)
+			print("⛈️ 暴风雨来了！")
 
 func _apply_ark_motion(delta):
 	# 只有当水位上升到一定程度时才摇晃（船在水中）

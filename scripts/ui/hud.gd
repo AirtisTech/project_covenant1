@@ -64,7 +64,16 @@ func _update_flood_display():
 	var pm = get_node_or_null("/root/PhaseManager")
 	if pm and pm.current_phase == pm.Phase.DELUGE:
 		flood_label.visible = true
-		var weather = "🌊 平静" if not pm.is_storming else "🌧️ 暴风雨!"
+		var weather = "☀️ 晴朗"
+		if pm.is_storming:
+			if pm.weather_intensity < 0.3:
+				weather = "🌤️ 多云"
+			elif pm.weather_intensity < 0.6:
+				weather = "🌧️ 小雨"
+			elif pm.weather_intensity < 0.8:
+				weather = "🌧️ 大雨"
+			else:
+				weather = "⛈️ 暴风雨！"
 		flood_label.text = "🌊 洪水已至！| %s" % weather
 	else:
 		flood_label.visible = false
