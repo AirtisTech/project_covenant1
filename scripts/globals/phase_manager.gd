@@ -5,8 +5,9 @@ enum Phase { PREPARATION, DELUGE, DRIFT }
 
 var current_phase: Phase = Phase.PREPARATION
 var current_day: int = 1
+var is_day_counting: bool = false  # 预备期不自动计算天数
 var phase_days: Dictionary = {
-	Phase.PREPARATION: 7,
+	Phase.PREPARATION: 999,  # 无限，让玩家慢慢规划
 	Phase.DELUGE: 40,
 	Phase.DRIFT: 150
 }
@@ -39,7 +40,7 @@ signal ark_weight_changed(weight: float)
 signal entered_ark()  # 家人登船
 
 func _ready():
-	print("📅 Phase: Preparation Day 1/7")
+	print("🎯 准备阶段 - 规划你的方舟布局")
 	update_ark_weight()
 
 func update_ark_weight():
@@ -55,6 +56,10 @@ func update_ark_weight():
 	print("⚖️ 方舟重量: ", weight)
 
 func advance_day():
+	# 预备期不自动计算天数
+	if current_phase == Phase.PREPARATION:
+		return
+	
 	current_day += 1
 	day_changed.emit(current_day)
 	
@@ -69,6 +74,12 @@ func advance_day():
 		_change_to_next_phase()
 	else:
 		print("📅 Day ", current_day, "/", days_in_phase)
+
+func start_flood_now():
+	# 玩家主动开始洪水
+	if current_phase == Phase.PREPARATION:
+		current_day = 1
+		_change_to_next_phase()
 
 func _change_to_next_phase():
 	var old_phase = current_phase

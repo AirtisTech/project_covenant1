@@ -23,11 +23,15 @@ func _process(_delta):
 	if not gm: return
 	
 	var phase_idx = gm.get("current_phase")
-	var phase_name = "布局阶段"
-	if phase_idx == 1: phase_name = "大洪水阶段"
-	elif phase_idx == 2: phase_name = "漂流阶段"
+	var phase_name = "🎯 准备阶段"
+	if phase_idx == 1: phase_name = "🌊 大洪水阶段"
+	elif phase_idx == 2: phase_name = "🛶 漂流阶段"
 	
-	day_label.text = "天数: %d | %s" % [gm.get("day"), phase_name]
+	# 准备阶段显示提示
+	if phase_idx == 0:
+		day_label.text = "准备阶段 | 规划你的方舟布局"
+	else:
+		day_label.text = "天数: %d | %s" % [gm.get("day"), phase_name]
 	
 	var veg = gm.get("veg_rations")
 	var meat = gm.get("meat_rations")
