@@ -41,7 +41,8 @@ func _get_agent_at_position(screen_pos: Vector2) -> Node:
 			# 将角色的世界坐标转换为屏幕坐标
 			var camera = get_viewport().get_camera_2d()
 			if camera:
-				var screen_pos_of_agent = camera.unproject(member.global_position)
+				# Godot 4.x 使用 unproject_position
+				var screen_pos_of_agent = camera.unproject_position(member.global_position)
 				# 检测点击是否在角色附近（50像素范围内）
 				if screen_pos.distance_to(screen_pos_of_agent) < 40:
 					return member
