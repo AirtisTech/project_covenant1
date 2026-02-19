@@ -36,11 +36,20 @@ func unregister_animal(animal_node):
 		animals.erase(animal_node)
 		print("🦌 Animal removed: ", animal_node.name)
 
-# 每天生存处理
+# 动物每天消耗食物
 func process_daily():
 	var hungry_count = 0
 	var healthy_count = 0
 	var dead_count = 0
+	
+	# 先检查是否有食物可以喂动物
+	var gm = get_node_or_null("/root/GameManager")
+	var has_veg = false
+	var has_meat = false
+	
+	if gm:
+		has_veg = gm.veg_rations > 0
+		has_meat = gm.meat_rations > 0
 	
 	for animal in animals:
 		if not is_instance_valid(animal):
@@ -48,9 +57,38 @@ func process_daily():
 		
 		var hunger = animal.get_meta("hunger", 0.0)
 		var health = animal.get_meta("health", 100.0)
+		var species = animal.get_meta("species")
 		
-		# 增加饥饿值
-		hunger += HUNGER_RATE
+		# 检查动物需要什么类型的食物
+		var needs_food = "none"
+		if species:
+			match species.diet:
+				0: needs_food = "veg"  # 草食
+				1: needs_food = "meat"  # 肉食
+				2: needs_food = "any"   # 杂食
+		
+		# 自动喂食
+		var fed = false
+		if needs_food == "veg" and has_veg:
+			if gm and gm.consume_resource("veg", 1.0):
+				hunger = max(0, hunger - 40)
+				fed = true
+		elif needs_food == "meat" and has_meat:
+			if gm and gm.consume_resource("meat", 1.0):
+				hunger = max(0, hunger - 40)
+				fed = true
+		elif needs_food == "any":
+			if has_veg and gm and gm.consume_resource("veg", 1.0):
+				hunger = max(0, hunger - 35)
+				fed = true
+			elif has_meat and gm and gm.consume_resource("meat", 1.0):
+				hunger = max(0, hunger - 35)
+				fed = true
+		
+		if not fed and hunger >= 50:
+			# 没吃饱，增加饥饿值
+			hunger += HUNGER_RATE * 0.5
+		
 		hunger = clamp(hunger, 0, 100)
 		animal.set_meta("hunger", hunger)
 		animal_hunger_changed.emit(animal, hunger)
@@ -75,10 +113,6 @@ func process_daily():
 	
 	daily_survival_report.emit(hungry_count, healthy_count, dead_count)
 	print("📊 Daily Report - Hungry: %d, Healthy: %d, Dead: %d" % [hungry_count, healthy_count, dead_count])
-	
-	# 如果有饥饿的动物，创建喂食任务
-	if hungry_count > 0:
-		_create_feeding_tasks()
 
 func _create_feeding_tasks():
 	var tm = get_node_or_null("/root/TaskManager")

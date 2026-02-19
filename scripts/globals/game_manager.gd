@@ -97,6 +97,9 @@ func _update_time(delta):
 		_process_daily_survival()
 
 func _process_daily_survival():
+	# 厨房生产食物
+	process_food_production()
+	
 	# 家人每天消耗
 	var human_food_need = humans_alive * 10.0  # 每人10单位食物
 	var human_water_need = humans_alive * 15.0  # 每人15单位水
@@ -133,3 +136,21 @@ func _hunger_effect(who: String, severity: float):
 	if severity > 0.5 and randf() < severity * 0.1:
 		humans_alive = max(1, humans_alive - 1)
 		survival_event.emit("💀 一位家人因饥饿去世了...")
+
+# 厨房烹饪系统
+var kitchens_count: int = 0
+var food_production_rate: float = 0.0  # 每个厨房每天生产食物量
+
+func add_kitchen():
+	kitchens_count += 1
+	food_production_rate = kitchens_count * 5.0  # 每个厨房每天产5单位
+	print("🍳 厨房已建造！食物产量: ", food_production_rate, "/天")
+
+func process_food_production():
+	# 每天自动生产食物（如果有厨房）
+	if kitchens_count > 0:
+		var produced = food_production_rate
+		veg_rations += produced
+		water += produced * 0.5  # 水是食物的一半
+		resource_changed.emit("food_production", produced)
+		survival_event.emit("🍳 厨房生产了 %d 食物" % produced)
