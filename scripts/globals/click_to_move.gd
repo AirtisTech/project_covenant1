@@ -59,7 +59,7 @@ func _get_agent_at_position(screen_pos: Vector2) -> Node:
 		if is_instance_valid(member):
 			var camera = get_viewport().get_camera_2d()
 			if camera:
-				var screen_pos_of_agent = camera.unproject_position(member.global_position)
+				var screen_pos_of_agent = member.get_global_transform_with_canvas().origin
 				# 触屏需要更大的点击范围
 				var touch_range = 50
 				if screen_pos.distance_to(screen_pos_of_agent) < touch_range:
@@ -86,7 +86,7 @@ func _move_agent_to(agent: Node, screen_pos: Vector2):
 	if not camera:
 		return
 	
-	var world_pos = camera.get_global_transform().affine_inverse() * screen_pos
+	var world_pos = get_viewport().get_canvas_transform().affine_inverse() * screen_pos
 	
 	if agent.has_method("move_to"):
 		agent.move_to(world_pos)
