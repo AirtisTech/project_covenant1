@@ -38,8 +38,8 @@ func _process(_delta):
 	_update_water()
 
 func _update_water():
-	# 使用固定的世界坐标，而不是屏幕坐标
-	var base_y = WORLD_HEIGHT - PhaseManager.get_water_height() - 200  # 从底部开始
+	# 水位高度：方舟甲板在 Y=300 左右，水需要超过 400 才能淹没
+	var base_y = WORLD_HEIGHT - PhaseManager.get_water_height() - 100  # 从底部开始，减去偏移
 	var time = PhaseManager.wave_time
 	
 	var points = PackedVector2Array()
