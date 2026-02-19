@@ -17,6 +17,20 @@ func _ready():
 	flood_label.add_theme_font_size_override("font_size", 16)
 	flood_label.visible = false
 	add_child(flood_label)
+	
+	# 创建生存事件显示标签
+	var event_label = Label.new()
+	event_label.name = "EventLabel"
+	event_label.position = Vector2(20, 110)
+	event_label.add_theme_color_override("font_color", Color.ORANGE)
+	event_label.add_theme_font_size_override("font_size", 14)
+	event_label.visible = false
+	add_child(event_label)
+	
+	# 连接生存事件信号
+	var gm = get_node_or_null("/root/GameManager")
+	if gm and gm.has_signal("survival_event"):
+		gm.survival_event.connect(_on_survival_event)
 
 func _process(_delta):
 	var gm = get_node_or_null("/root/GameManager")
@@ -35,8 +49,9 @@ func _process(_delta):
 	
 	var veg = gm.get("veg_rations")
 	var meat = gm.get("meat_rations")
+	var water = gm.get("water")
 	var faith = gm.get("faith")
-	res_label.text = "🍎素食: %d | 🥩肉类: %d | ❤️信心: %d%%" % [veg, meat, faith]
+	res_label.text = "🍎素食: %d | 🥩肉类: %d | 💧水: %d | ❤️信心: %d%%" % [veg, meat, water, faith]
 	
 	# 布局完成后隐藏启动按钮
 	if phase_idx != 0:
@@ -64,3 +79,12 @@ func _on_start_pressed():
 		
 		if get_node_or_null("/root/HapticManager"):
 			get_node("/root/HapticManager").call("heavy")
+
+func _on_survival_event(message: String):
+	var event_label = find_child("EventLabel", true, false)
+	if event_label:
+		event_label.text = message
+		event_label.visible = true
+		# 3秒后隐藏
+		await get_tree().create_timer(3.0).timeout
+		event_label.visible = false
