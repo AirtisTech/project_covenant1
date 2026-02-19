@@ -29,6 +29,7 @@ func _ready():
 	var pm = get_node_or_null("/root/PhaseManager")
 	if pm:
 		pm.ark_tilt_changed.connect(_on_ark_tilt_changed)
+		pm.ark_weight_changed.connect(_on_ark_weight_changed)
 
 # 处理点击拆除
 func _input(event):
@@ -221,3 +222,12 @@ func _on_ark_tilt_changed(tilt: float):
 	
 	position = base_position + Vector2(offset_x, offset_y)
 	rotation = tilt * 0.1  # 轻微旋转
+
+func _on_ark_weight_changed(weight: float):
+	# 根据重量调整方舟漂浮高度
+	var pm = get_node_or_null("/root/PhaseManager")
+	if pm:
+		var float_offset = pm.get_ark_float_offset()
+		base_position = Vector2(0, float_offset)
+		position = base_position + Vector2(rotation * 30.0, abs(rotation) * 10.0)
+		print("🛶 方舟漂浮位置调整: 下沉 ", float_offset, "px")

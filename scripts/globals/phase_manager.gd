@@ -17,6 +17,11 @@ var flood_speed: float = 0.0        # 水位上升速度
 var ark_tilt: float = 0.0          # -1 到 1 左右倾斜
 var ark_roll: float = 0.0          # 前后倾斜
 
+# 方舟漂浮参数
+const ARK_BASE_Y: float = 340.0     # 方舟正常漂浮水位（半浸）
+const ARK_FULL_WEIGHT: float = 100.0  # 满载重量
+var current_ark_weight: float = 20.0   # 当前重量（基础 + 动物）
+
 # 海浪参数
 var wave_time: float = 0.0
 var wave_amplitude: float = 10.0   # 海浪高度
@@ -30,9 +35,23 @@ signal phase_changed(from: Phase, to: Phase)
 signal day_changed(day: int)
 signal flood_level_changed(level: float)
 signal ark_tilt_changed(tilt: float)
+signal ark_weight_changed(weight: float)
 
 func _ready():
 	print("📅 Phase: Preparation Day 1/7")
+	update_ark_weight()
+
+func update_ark_weight():
+	# 计算方舟重量：基础重量 + 动物重量
+	var weight = 20.0  # 基础重量（方舟本身 + 8人）
+	
+	var survival = get_node_or_null("/root/AnimalSurvival")
+	if survival and survival.animals:
+		weight += survival.animals.size() * 5.0  # 每只动物约 5 重量
+	
+	current_ark_weight = weight
+	ark_weight_changed.emit(weight)
+	print("⚖️ 方舟重量: ", weight)
 
 func advance_day():
 	current_day += 1
@@ -139,8 +158,18 @@ func _apply_ark_motion(delta):
 
 func get_water_height() -> float:
 	# 返回当前水位高度（像素）
-	# 方舟甲板在 Y=300-380，水位要超过 1100 才能淹没
-	return flood_water_level * 1200.0
+	# 方舟正常半浸时，水面在 Y=340
+	# 满载时方舟更低，缺水更深
+	var weight_factor = current_ark_weight / ARK_FULL_WEIGHT  # 0-1
+	var extra_depth = weight_factor * 100.0  # 满载时多下沉 100px
+	
+	# 基础水位 + 重量下沉
+	return flood_water_level * 800.0 + extra_depth
+
+func get_ark_float_offset() -> float:
+	# 返回方舟因重量下沉的距离
+	var weight_factor = clamp(current_ark_weight / ARK_FULL_WEIGHT, 0.0, 1.5)
+	return weight_factor * 60.0  # 最大下沉 60px
 
 func get_wave_offset(x: float) -> float:
 	# 获取指定x位置的波浪偏移

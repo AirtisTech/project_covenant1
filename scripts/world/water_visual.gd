@@ -38,8 +38,9 @@ func _process(_delta):
 	_update_water()
 
 func _update_water():
-	# 水位高度：方舟甲板在 Y=300 左右，水需要超过 400 才能淹没
-	var base_y = WORLD_HEIGHT - PhaseManager.get_water_height() - 100  # 从底部开始，减去偏移
+	# 水位高度：方舟在 Y=260-420，半浸时水面约在 Y=340
+	# 根据方舟重量调整
+	var base_y = WORLD_HEIGHT - PhaseManager.get_water_height() - 300
 	var time = PhaseManager.wave_time
 	
 	var points = PackedVector2Array()
