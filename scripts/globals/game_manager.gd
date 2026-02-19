@@ -97,8 +97,8 @@ func _update_time(delta):
 		_process_daily_survival()
 
 func _process_daily_survival():
-	# 厨房生产食物
-	process_food_production()
+	# 处理农作物生长
+	process_daily_crops()
 	
 	# 家人每天消耗
 	var human_food_need = humans_alive * 10.0  # 每人10单位食物
@@ -137,20 +137,64 @@ func _hunger_effect(who: String, severity: float):
 		humans_alive = max(1, humans_alive - 1)
 		survival_event.emit("💀 一位家人因饥饿去世了...")
 
-# 厨房烹饪系统
+# 厨房烹饪系统（不再自动生产食物）
 var kitchens_count: int = 0
-var food_production_rate: float = 0.0  # 每个厨房每天生产食物量
 
 func add_kitchen():
 	kitchens_count += 1
-	food_production_rate = kitchens_count * 5.0  # 每个厨房每天产5单位
-	print("🍳 厨房已建造！食物产量: ", food_production_rate, "/天")
+	print("🍳 厨房已建造！")
 
-func process_food_production():
-	# 每天自动生产食物（如果有厨房）
-	if kitchens_count > 0:
-		var produced = food_production_rate
-		veg_rations += produced
-		water += produced * 0.5  # 水是食物的一半
-		resource_changed.emit("food_production", produced)
-		survival_event.emit("🍳 厨房生产了 %d 食物" % produced)
+# 宰杀动物获取食物
+func slaughter_animal(species) -> Dictionary:
+	# 根据动物种类获取食物
+	var food_amount = 0
+	var food_type = "meat"
+	
+	if species.is_clean:
+		# 清洁动物可以提供肉食
+		food_amount = int(species.base_weight * 10)  # 根据重量计算
+		meat_rations += food_amount
+		resource_changed.emit("meat", food_amount)
+		survival_event.emit("🔪 宰杀了 %s，获得 %d 肉食" % [species.species_name, food_amount])
+	else:
+		# 不洁动物需要处理
+		food_amount = int(species.base_weight * 5)
+		meat_rations += food_amount
+		resource_changed.emit("meat", food_amount)
+		survival_event.emit("🔪 宰杀了 %s，获得 %d 肉食（不洁）" % [species.species_name, food_amount])
+	
+	return {"type": food_type, "amount": food_amount}
+
+# 农作物系统
+var crops: Dictionary = {
+	"wheat": {"planted": 0, "ready": 0, "growth_time": 10, "yield": 5},
+	"barley": {"planted": 0, "ready": 0, "growth_time": 8, "yield": 4},
+	"grapes": {"planted": 0, "ready": 0, "growth_time": 15, "yield": 8}
+}
+
+func plant_crop(crop_type: String) -> bool:
+	if crops.has(crop_type):
+		crops[crop_type]["planted"] += 1
+		return true
+	return false
+
+func harvest_crop(crop_type: String) -> int:
+	if crops.has(crop_type) and crops[crop_type]["ready"] > 0:
+		var yield_amount = crops[crop_type]["yield"]
+		crops[crop_type]["ready"] -= 1
+		veg_rations += yield_amount
+		resource_changed.emit("veg", yield_amount)
+		survival_event.emit("🌾 收获了 %s +%d 素食" % [crop_type, yield_amount])
+		return yield_amount
+	return 0
+
+func process_daily_crops():
+	# 处理农作物生长
+	for crop_type in crops.keys():
+		var crop = crops[crop_type]
+		if crop["planted"] > 0:
+			# 随机生长
+			if randf() < 0.3:  # 30% 概率每天生长
+				crop["ready"] += 1
+				crop["planted"] -= 1
+				survival_event.emit("🌱 %s 可以收获了" % crop_type)
