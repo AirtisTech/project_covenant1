@@ -13,14 +13,38 @@ const HUNGER_RATE: float = 10.0    # 每天饥饿增长速度
 const HEALTH_DECAY: float = 20.0   # 饥饿时的健康衰减
 const FAITH_DRAIN: float = 5.0     # 动物死亡时信仰损失
 
+# 瘟疫系统
+var plague_active: bool = false
+var plague_spread_timer: float = 0.0
+const PLAGUE_SPREAD_INTERVAL: float = 3.0  # 瘟疫传播间隔
+const PLAGUE_DAMAGE: float = 15.0  # 瘟疫伤害
+
 signal animal_hunger_changed(animal, hunger: float)
 signal animal_health_changed(animal, health: float)
 signal animal_died(animal)
-signal animal_born(species, count: int)  # 新增：动物出生信号
+signal animal_born(species, count: int)
+signal plague_started()
+signal plague_ended()
 signal daily_survival_report(hungry: int, healthy: int, dead: int)
 
 func _ready():
 	print("🦌 AnimalSurvivalSystem initialized")
+
+func _process(delta):
+	# 处理瘟疫传播
+	if plague_active:
+		_process_plague(delta)
+		
+		# 瘟疫有一定概率结束（如果没有健康动物了）
+		var healthy_count = 0
+		for animal in animals:
+			if is_instance_valid(animal) and not animal.get_meta("has_plague", false):
+				healthy_count += 1
+		
+		if healthy_count == 0:
+			# 所有动物都感染了，一段时间后瘟疫结束
+			if randf() < 0.01:  # 1% 概率每天结束
+				_end_plague()
 
 # 注册动物到生存系统
 func register_animal(animal_node):
@@ -101,6 +125,21 @@ func _process_breeding():
 					_breed_animal(species)
 
 func _breed_animal(species):
+	# 检查是否超过容量
+	var current_count = 0
+	for a in animals:
+		if is_instance_valid(a):
+			var s = a.get_meta("species")
+			if s and s.species_name == species.species_name:
+				current_count += 1
+	
+	var max_capacity = species.total_animals * 1.5  # 允许超过50%
+	
+	if current_count >= max_capacity and not plague_active:
+		# 触发瘟疫
+		_start_plague(species)
+		return
+	
 	# 繁殖成功，添加新动物
 	var ark = get_tree().root.find_child("ArkSystem", true, false)
 	if not ark:
@@ -118,10 +157,99 @@ func _breed_animal(species):
 	new_animal.set_meta("species", species)
 	new_animal.set_meta("hunger", 0.0)
 	new_animal.set_meta("health", 100.0)
+	new_animal.set_meta("has_plague", false)  # 新动物初始没有瘟疫
 	register_animal(new_animal)
 	
 	animal_born.emit(species, 1)
 	print("🐣 %s 繁殖了新一代！" % species.species_name)
+	
+	# 检查是否触发瘟疫
+	_check_plague_trigger(species)
+
+func _check_plague_trigger(species):
+	var current_count = 0
+	for a in animals:
+		if is_instance_valid(a):
+			var s = a.get_meta("species")
+			if s and s.species_name == species.species_name:
+				current_count += 1
+	
+	var max_capacity = species.total_animals
+	
+	if current_count > max_capacity and not plague_active:
+		_start_plague(species)
+
+func _start_plague(patient_zero_species):
+	plague_active = true
+	plague_spread_timer = 0.0
+	plague_started.emit()
+	print("💀 瘟疫爆发！%s 携带病原体" % patient_zero_species.species_name)
+	
+	# 随机让几只动物感染
+	var infected_count = 0
+	for animal in animals:
+		if is_instance_valid(animal):
+			var s = animal.get_meta("species")
+			if s and s.species_name == patient_zero_species.species_name:
+				animal.set_meta("has_plague", true)
+				infected_count += 1
+				if infected_count >= 3:
+					break
+	
+	# 发送警告
+	var gm = get_node_or_null("/root/GameManager")
+	if gm:
+		gm.survival_event.emit("💀 警告：瘟疫在动物间传播！")
+
+func _process_plague(delta):
+	if not plague_active:
+		return
+	
+	plague_spread_timer += delta
+	if plague_spread_timer >= PLAGUE_SPREAD_INTERVAL:
+		plague_spread_timer = 0.0
+		_spread_plague()
+
+func _spread_plague():
+	# 瘟疫传播给附近的动物
+	for animal in animals:
+		if not is_instance_valid(animal):
+			continue
+		
+		# 如果已经有瘟疫，传播给附近的健康动物
+		if animal.get_meta("has_plague", false):
+			var pos = animal.global_position
+			for other in animals:
+				if not is_instance_valid(other):
+					continue
+				if other.get_meta("has_plague", false):
+					continue
+				
+				var other_pos = other.global_position
+				if pos.distance_to(other_pos) < 50:  # 50像素内的动物
+					# 50% 概率感染
+					if randf() < 0.5:
+						other.set_meta("has_plague", true)
+						print("💀 瘟疫传染给了附近的动物")
+		
+		# 有瘟疫的动物持续掉血
+		var health = animal.get_meta("health", 100.0)
+		health -= PLAGUE_DAMAGE
+		animal.set_meta("health", health)
+		animal_health_changed.emit(animal, health)
+		
+		# 严重时死亡
+		if health <= 0:
+			_dead_animal(animal)
+
+func _end_plague():
+	plague_active = false
+	plague_ended.emit()
+	print("✅ 瘟疫结束了")
+	
+	var gm = get_node_or_null("/root/GameManager")
+	if gm:
+		gm.survival_event.emit("✅ 瘟疫已结束")
 
 func _create_feeding_task(animal):
 	var tm = get_node_or_null("/root/TaskManager")
