@@ -252,3 +252,152 @@ func _init_list():
 	monkey.placement_faith_cost = 0.5
 	monkey.visual_color = Color.SIENNA
 	species_list.append(monkey)
+	
+	# ===== 更多清洁动物 =====
+	var dove = AnimalSpeciesClass.new()
+	dove.species_name = "Dove"
+	dove.description = "和平的象征。善于飞翔。"
+	dove.is_clean = true
+	dove.base_width_cubits = 1.0
+	dove.base_weight = 0.2
+	dove.placement_faith_cost = 0.1
+	dove.visual_color = Color.WHITE
+	species_list.append(dove)
+	
+	var chicken = AnimalSpeciesClass.new()
+	chicken.species_name = "Chicken"
+	chicken.description = "家禽。提供蛋和肉。"
+	chicken.is_clean = true
+	chicken.base_width_cubits = 1.0
+	chicken.base_weight = 0.3
+	chicken.placement_faith_cost = 0.2
+	chicken.visual_color = Color(1, 0.9, 0.6)
+	species_list.append(chicken)
+	
+	var duck = AnimalSpeciesClass.new()
+	duck.species_name = "Duck"
+	duck.description = "水禽。善于游泳。"
+	duck.is_clean = true
+	duck.base_width_cubits = 1.5
+	duck.base_weight = 0.4
+	duck.placement_faith_cost = 0.2
+	duck.visual_color = Color(0.6, 0.8, 0.4)
+	species_list.append(duck)
+	
+	var goose = AnimalSpeciesClass.new()
+	goose.species_name = "Goose"
+	goose.description = "警觉性高的水禽。"
+	goose.is_clean = true
+	goose.base_width_cubits = 2.0
+	goose.base_weight = 0.5
+	goose.placement_faith_cost = 0.3
+	goose.visual_color = Color(0.9, 0.9, 0.95)
+	species_list.append(goose)
+	
+	var donkey = AnimalSpeciesClass.new()
+	donkey.species_name = "Donkey"
+	donkey.description = "耐力的搬运助手。"
+	donkey.is_clean = true
+	donkey.base_width_cubits = 4.0
+	donkey.base_weight = 3.0
+	donkey.placement_faith_cost = 1.0
+	donkey.visual_color = Color(0.5, 0.5, 0.5)
+	species_list.append(donkey)
+	
+	var ox = AnimalSpeciesClass.new()
+	ox.species_name = "Ox"
+	ox.description = "耕田好帮手。力量强大。"
+	ox.is_clean = true
+	ox.base_width_cubits = 5.0
+	ox.base_weight = 5.0
+	ox.placement_faith_cost = 1.5
+	ox.visual_color = Color(0.4, 0.3, 0.2)
+	species_list.append(ox)
+	
+	var pigeon = AnimalSpeciesClass.new()
+	pigeon.species_name = "Pigeon"
+	pigeon.description = "天空的使者。"
+	pigeon.is_clean = true
+	pigeon.base_width_cubits = 1.0
+	pigeon.base_weight = 0.2
+	pigeon.placement_faith_cost = 0.1
+	pigeon.visual_color = Color(0.7, 0.7, 0.75)
+	species_list.append(pigeon)
+	
+	# ===== 更多不洁动物 =====
+	var hyena = AnimalSpeciesClass.new()
+	hyena.species_name = "Hyena"
+	hyena.description = "机会主义猎食者。"
+	hyena.is_clean = false
+	hyena.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	hyena.base_width_cubits = 3.0
+	hyena.base_weight = 2.0
+	hyena.placement_faith_cost = 2.0
+	hyena.visual_color = Color(0.6, 0.55, 0.4)
+	species_list.append(hyena)
+	
+	var vulture = AnimalSpeciesClass.new()
+	vulture.species_name = "Vulture"
+	vulture.description = "食腐动物。"
+	vulture.is_clean = false
+	vulture.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	vulture.base_width_cubits = 2.0
+	vulture.base_weight = 0.8
+	vulture.placement_faith_cost = 1.0
+	vulture.visual_color = Color(0.3, 0.25, 0.2)
+	species_list.append(vulture)
+	
+	var crocodile = AnimalSpeciesClass.new()
+	crocodile.species_name = "Crocodile"
+	crocodile.description = "危险的爬行动物。"
+	crocodile.is_clean = false
+	crocodile.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	crocodile.base_width_cubits = 12.0
+	crocodile.base_weight = 10.0
+	crocodile.placement_faith_cost = 4.0
+	crocodile.visual_color = Color(0.2, 0.4, 0.2)
+	species_list.append(crocodile)
+	
+	var snake = AnimalSpeciesClass.new()
+	snake.species_name = "Snake"
+	snake.description = "滑行的猎食者。"
+	snake.is_clean = false
+	snake.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	snake.base_width_cubits = 3.0
+	snake.base_weight = 0.5
+	snake.placement_faith_cost = 1.5
+	snake.visual_color = Color(0.3, 0.5, 0.3)
+	species_list.append(snake)
+	
+	var scorpion = AnimalSpeciesClass.new()
+	scorpion.species_name = "Scorpion"
+	scorpion.description = "沙漠中的危险生物。"
+	scorpion.is_clean = false
+	scorpion.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	scorpion.base_width_cubits = 1.0
+	scorpion.base_weight = 0.1
+	scorpion.placement_faith_cost = 0.8
+	scorpion.visual_color = Color(0.2, 0.1, 0.1)
+	species_list.append(scorpion)
+	
+	var spider = AnimalSpeciesClass.new()
+	spider.species_name = "Spider"
+	spider.description = "织网高手。"
+	spider.is_clean = false
+	spider.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	spider.base_width_cubits = 1.0
+	spider.base_weight = 0.05
+	spider.placement_faith_cost = 0.5
+	spider.visual_color = Color(0.1, 0.1, 0.1)
+	species_list.append(spider)
+	
+	var rat = AnimalSpeciesClass.new()
+	rat.species_name = "Rat"
+	rat.description = "繁殖迅速的小型哺乳动物。"
+	rat.is_clean = false
+	rat.diet = AnimalSpeciesClass.Diet.OMNIVORE
+	rat.base_width_cubits = 1.0
+	rat.base_weight = 0.1
+	rat.placement_faith_cost = 0.3
+	rat.visual_color = Color(0.5, 0.45, 0.4)
+	species_list.append(rat)
