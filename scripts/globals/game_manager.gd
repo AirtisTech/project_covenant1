@@ -19,11 +19,14 @@ var ark_system: Node2D = null
 # 生存状态
 var humans_alive: int = 8
 var animals_alive: int = 0
+var game_over: bool = false
+var victory: bool = false
 
 signal stats_updated()
 signal phase_started(new_phase: Phase)
 signal resource_changed(resource: String, amount: float)
 signal survival_event(message: String)
+signal game_ended(victory: bool, message: String)
 
 func _ready():
 	print("--- 圣约计划启动 ---")
@@ -125,6 +128,9 @@ func _process_daily_survival():
 	# 动物每天消耗（通过 AnimalSurvival 处理）
 	
 	stats_updated.emit()
+	
+	# 检查胜利条件
+	_check_victory()
 
 func _hunger_effect(who: String, severity: float):
 	# 饥饿/缺水导致信心下降
@@ -136,6 +142,38 @@ func _hunger_effect(who: String, severity: float):
 	if severity > 0.5 and randf() < severity * 0.1:
 		humans_alive = max(1, humans_alive - 1)
 		survival_event.emit("💀 一位家人因饥饿去世了...")
+	
+	# 检查失败条件
+	_check_game_over()
+
+func _check_game_over():
+	if game_over:
+		return
+	
+	# 失败条件1：所有家人死亡
+	if humans_alive <= 0:
+		_end_game(false, "所有家人已去世...")
+		return
+	
+	# 失败条件2：信心归零
+	if faith <= 0:
+		_end_game(false, "信心已耗尽，大家放弃了希望...")
+		return
+
+func _check_victory():
+	if game_over or victory:
+		return
+	
+	# 胜利条件：漂流阶段完成（150天）
+	if current_phase == Phase.DRIFT and day >= 150:
+		_end_game(true, "🎉 找到陆地！方舟之旅成功结束！")
+
+func _end_game(is_victory: bool, message: String):
+	game_over = true
+	victory = is_victory
+	game_ended.emit(is_victory, message)
+	print("🏆 游戏结束: ", "胜利" if is_victory else "失败", " - ", message)
+	survival_event.emit(message if is_victory else "💀 " + message)
 
 # 厨房烹饪系统（不再自动生产食物）
 var kitchens_count: int = 0

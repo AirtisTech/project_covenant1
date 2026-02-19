@@ -75,6 +75,14 @@ func advance_day():
 		_change_to_next_phase()
 	else:
 		print("📅 Day ", current_day, "/", days_in_phase)
+	
+	# 漂流阶段第150天时触发胜利
+	if current_phase == Phase.DRIFT and current_day == 150:
+		_trigger_victory()
+
+func _trigger_victory():
+	print("🎉 漂流阶段完成！找到陆地！")
+	# 这里会由 GameManager 处理胜利
 
 func start_flood_now():
 	# 玩家主动开始洪水
