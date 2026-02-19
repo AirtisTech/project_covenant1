@@ -30,7 +30,7 @@ func _get_drag_data(at_position):
 	_hide_preview()
 	return null
 
-func _can_drop_data_fallback(at_position, data):
+func _can_drop_data_fallback(at_position, _data):
 	# 当拖拽离开区域时隐藏预览
 	_hide_preview()
 	return false
