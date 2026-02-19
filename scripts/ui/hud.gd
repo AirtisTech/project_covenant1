@@ -4,6 +4,7 @@ extends Control
 @onready var res_label = $VBoxContainer/ResourceLabel
 @onready var start_button = $StartButton
 var flood_label: Label
+var agent_info_panel: Control
 
 func _ready():
 	if start_button:
@@ -31,6 +32,29 @@ func _ready():
 	var gm = get_node_or_null("/root/GameManager")
 	if gm and gm.has_signal("survival_event"):
 		gm.survival_event.connect(_on_survival_event)
+	
+	# 创建角色信息面板
+	_create_agent_info_panel()
+	
+	# 连接选择信号
+	var sm = get_node_or_null("/root/SelectionManager")
+	if sm:
+		sm.agent_selected.connect(_on_agent_selected)
+		sm.agent_deselected.connect(_on_agent_deselected)
+
+func _create_agent_info_panel():
+	var AgentInfoPanelClass = load("res://scripts/ui/agent_info_panel.gd")
+	agent_info_panel = AgentInfoPanelClass.new()
+	agent_info_panel.name = "AgentInfoPanel"
+	add_child(agent_info_panel)
+
+func _on_agent_selected(agent: Node):
+	if agent_info_panel:
+		agent_info_panel.set_selected_agent(agent)
+
+func _on_agent_deselected():
+	if agent_info_panel:
+		agent_info_panel.clear_selection()
 
 func _process(_delta):
 	var gm = get_node_or_null("/root/GameManager")
@@ -44,6 +68,7 @@ func _process(_delta):
 	# 准备阶段显示提示
 	if phase_idx == 0:
 		day_label.text = "准备阶段 | 规划你的方舟布局"
+		day_label.tooltip_text = "点击角色可查看状态和任务队列"
 	else:
 		day_label.text = "天数: %d | %s" % [gm.get("day"), phase_name]
 	
