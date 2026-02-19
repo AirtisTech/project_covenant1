@@ -15,6 +15,7 @@ enum State { IDLE, MOVING, WORKING, EXHAUSTED, RESTING, PLAYER_ASSIGNED }
 var current_state: State = State.IDLE
 
 var current_task = null
+var task_queue: Array = []  # 任务队列
 var player_assigned_task: bool = false  # 是否是玩家指派的任务
 var current_path: PackedVector2Array = []
 var selection_visual: ColorRect
@@ -89,11 +90,38 @@ func set_selection(is_selected: bool):
 
 # 玩家指派任务
 func assign_task(task_type, target_pos: Vector2):
-	current_task = TaskDataClass.new(task_type, target_pos, 1, null, "veg")
+	var task = TaskDataClass.new(task_type, target_pos, 1, null, "veg")
+	task_queue.append(task)
 	player_assigned_task = true
-	target_position = target_pos
-	current_state = State.MOVING
-	print("📋 玩家指派任务给 ", agent_name, ": ", task_type)
+	
+	if current_state == State.IDLE:
+		_process_task_queue()
+	
+	print("📋 玩家给 ", agent_name, " 添加了任务 (队列: %d)" % task_queue.size())
+
+func add_task_to_queue(task_type, target_pos: Vector2, food_type: String = "veg"):
+	var task = TaskDataClass.new(task_type, target_pos, 1, null, food_type)
+	task_queue.append(task)
+	print("📝 添加任务到 %s 队列: %d 个" % [agent_name, task_queue.size()])
+	
+	if current_state == State.IDLE:
+		_process_task_queue()
+
+func _process_task_queue():
+	if not task_queue.is_empty():
+		current_task = task_queue.pop_front()
+		target_position = current_task.position
+		current_state = State.MOVING
+		print("▶️ %s 开始下一个任务 (剩余: %d)" % [agent_name, task_queue.size()])
+	elif current_task == null:
+		# 队列空了，回到 IDLE
+		current_state = State.IDLE
+
+func clear_task_queue():
+	task_queue.clear()
+	current_task = null
+	current_state = State.IDLE
+	print("🗑️ 清除了 %s 的所有任务" % agent_name)
 
 func _physics_process(delta):
 	_update_stamina(delta)
@@ -239,7 +267,12 @@ func _complete_task():
 	if tm and current_task:
 		tm.call("complete_task", current_task)
 	current_task = null
-	current_state = State.IDLE
+	
+	# 检查任务队列
+	if not task_queue.is_empty():
+		_process_task_queue()
+	else:
+		current_state = State.IDLE
 
 func _go_to_rest():
 	current_state = State.RESTING
