@@ -1,3 +1,6 @@
+# 预加载类
+const AnimalSpeciesClass = preload("res://scripts/resources/animal_species.gd")
+
 extends Control
 
 var name_label: Label
@@ -60,10 +63,10 @@ func _build_ui_internally():
 	remove_btn.pressed.connect(_on_remove_pressed)
 	vbox.add_child(remove_btn)
 
-func show_at_position(species: AnimalSpecies, target_top_center: Vector2, is_built: bool = false, coord: Vector2i = Vector2i.ZERO):
+func show_at_position(species, target_top_center: Vector2, is_built: bool = false, coord: Vector2i = Vector2i.ZERO):
 	name_label.text = species.species_name
 	desc_label.text = species.description
-	var diet = "🌿素食" if species.diet == AnimalSpecies.Diet.HERBIVORE else "🥩肉食"
+	var diet = "🌿素食" if species.diet == AnimalSpeciesClass.Diet.HERBIVORE else "🥩肉食"
 	stats_label.text = "格数:%d | 重量:%.1f | %s" % [species.width_in_cells, species.weight, diet]
 	
 	remove_btn.visible = is_built

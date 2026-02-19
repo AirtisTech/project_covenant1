@@ -20,6 +20,15 @@ func _ready():
 	_setup_visuals()
 	_setup_preview()
 
+# 处理点击拆除
+func _input(event):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		# 获取世界坐标
+		var camera = get_viewport().get_camera_2d()
+		if camera:
+			var world_pos = camera.get_global_transform().affine_inverse() * event.global_position
+			handle_manual_click(world_pos)
+
 func _setup_drag_control():
 	var ctrl = Control.new()
 	ctrl.name = "ArkDragCatcher"
@@ -59,7 +68,7 @@ func _pixel_to_grid(pixel_pos: Vector2) -> Vector2i:
 # --- 核心：模糊点击感应算法 ---
 func handle_manual_click(world_pos: Vector2):
 	# 允许点击点偏离地板中心轴上下各 1 格 (20px)
-	var gx = int(floor((world_pos.x - ARK_START_X) / CELL_SIZE.x))
+	var gx = int(round((world_pos.x - ARK_START_X) / CELL_SIZE.x))
 	var py = world_pos.y
 	
 	var target_gy = -1
@@ -95,7 +104,7 @@ func _on_cage_triggered(species, coord: Vector2i):
 		panel.call("show_at_position", species, top_center, true, coord)
 
 func update_placement_preview(world_pos: Vector2, species):
-	var grid_x = floor((world_pos.x - ARK_START_X) / CELL_SIZE.x)
+	var grid_x = round((world_pos.x - ARK_START_X) / CELL_SIZE.x)
 	var best_gy = -1
 	for gy in DECK_Y_INDICES:
 		if abs(world_pos.y - (gy * 20)) < 40.0: 
@@ -117,7 +126,7 @@ func try_place_at_world_pos(world_pos: Vector2, species) -> bool:
 	var best_gy = -1
 	for gy in DECK_Y_INDICES:
 		if abs(world_pos.y - (gy * 20)) < 40.0: best_gy = gy
-	var grid_x = floor((world_pos.x - ARK_START_X) / CELL_SIZE.x)
+	var grid_x = round((world_pos.x - ARK_START_X) / CELL_SIZE.x)
 	var snap_coord = Vector2i(int(grid_x), best_gy)
 	
 	if best_gy != -1 and _can_place_here(snap_coord, species):
