@@ -148,19 +148,35 @@ func _do_work(_delta):
 
 func _do_feeding():
 	var target = current_task.target_node
+	var food_type = current_task.food_type if current_task else "veg"
+	
 	if target and is_instance_valid(target):
 		var species = target.get_meta("species")
 		if species:
-			var food_type = "veg"
-			if species.diet == 1:
-				food_type = "meat"
-			
-			var survival = get_node_or_null("/root/AnimalSurvival")
-			if survival:
-				survival.feed_animal(target, food_type)
-				print("🍖 ", agent_name, " 喂食了 ", species.species_name)
+			var gm = get_node_or_null("/root/GameManager")
+			if gm:
+				# 检查是否有正确的食物
+				var consumed = false
+				if food_type == "veg" or food_type == "any":
+					if gm.consume_resource("veg", 2.0):
+						consumed = true
+						_finish_feeding(target, 30)
+				elif food_type == "meat":
+					if gm.consume_resource("meat", 2.0):
+						consumed = true
+						_finish_feeding(target, 30)
+				
+				if not consumed:
+					print("❌ 没有足够的食物！")
 	
 	_complete_task()
+
+func _finish_feeding(target, hunger_reduction):
+	if target and is_instance_valid(target):
+		var hunger = target.get_meta("hunger", 0.0)
+		hunger = max(0, hunger - hunger_reduction)
+		target.set_meta("hunger", hunger)
+		print("🍎 ", agent_name, " 喂食成功！动物饥饿值: ", hunger)
 
 func _do_cleaning():
 	print("🧹 ", agent_name, " 正在清理")

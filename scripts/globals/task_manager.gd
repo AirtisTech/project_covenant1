@@ -10,8 +10,8 @@ signal task_added(task)
 signal task_started(task, agent: Node)
 signal task_completed(task)
 
-func add_task(type, pos: Vector2, priority: int = 1, target: Node = null):
-	var new_task = TaskDataClass.new(type, pos, priority, target)
+func add_task(type, pos: Vector2, food_type: String = "veg", priority: int = 1, target: Node = null):
+	var new_task = TaskDataClass.new(type, pos, priority, target, food_type)
 	pending_tasks.append(new_task)
 	pending_tasks.sort_custom(func(a, b): return a.priority < b.priority)
 	task_added.emit(new_task)

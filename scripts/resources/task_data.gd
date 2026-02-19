@@ -19,12 +19,14 @@ enum Type {
 @export var type: Type = Type.IDLE
 @export var position: Vector2 = Vector2.ZERO
 @export var priority: int = 1 # 1 为最高
+@export var food_type: String = "veg"  # 需要的食物类型: veg, meat, any
 
 var target_node: Node = null # 任务关联的对象
 var assigned_agent: Node = null # 已指派的成员
 
-func _init(p_type: Type = Type.IDLE, p_pos: Vector2 = Vector2.ZERO, p_priority: int = 1, p_target: Node = null):
+func _init(p_type: Type = Type.IDLE, p_pos: Vector2 = Vector2.ZERO, p_priority: int = 1, p_target: Node = null, p_food_type: String = "veg"):
 	type = p_type
 	position = p_pos
 	priority = p_priority
 	target_node = p_target
+	food_type = p_food_type
