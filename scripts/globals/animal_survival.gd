@@ -1,5 +1,8 @@
 extends Node
 
+# 预加载
+const TaskDataClass = preload("res://scripts/resources/task_data.gd")
+
 # 动物生存系统
 # 管理所有动物的饥饿、健康、信仰流失
 
@@ -72,6 +75,34 @@ func process_daily():
 	
 	daily_survival_report.emit(hungry_count, healthy_count, dead_count)
 	print("📊 Daily Report - Hungry: %d, Healthy: %d, Dead: %d" % [hungry_count, healthy_count, dead_count])
+	
+	# 如果有饥饿的动物，创建喂食任务
+	if hungry_count > 0:
+		_create_feeding_tasks()
+
+func _create_feeding_tasks():
+	var tm = get_node_or_null("/root/TaskManager")
+	if not tm:
+		return
+	
+	# 为每只饥饿的动物创建喂食任务
+	for animal in animals:
+		if not is_instance_valid(animal):
+			continue
+		
+		var hunger = animal.get_meta("hunger", 0.0)
+		if hunger > 50:
+			var species = animal.get_meta("species")
+			if species:
+				# 根据动物食性创建任务
+				var food_type = "veg"
+				if species.diet == 1:  # CARNIVORE
+					food_type = "meat"
+				
+				# 使用动物的世界位置作为任务位置
+				var task_pos = animal.global_position
+				tm.call("add_task", TaskDataClass.Type.FEED, task_pos, 2, animal)
+				print("📝 Created FEED task for ", species.species_name)
 
 func _dead_animal(animal):
 	# 信仰损失

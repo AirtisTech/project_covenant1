@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+# 预加载
+const TaskDataClass = preload("res://scripts/resources/task_data.gd")
+
 @export var move_speed: float = 120.0
 @export var agent_name: String = "Noah"
 
@@ -11,7 +14,7 @@ const STAMINA_RECOVERY_RATE = 2.0
 enum State { IDLE, MOVING, WORKING, EXHAUSTED }
 var current_state: State = State.IDLE
 
-var current_task: TaskData = null
+var current_task = null
 var current_path: PackedVector2Array = []
 var selection_visual: ColorRect
 var stamina_bar: ColorRect 
@@ -122,8 +125,44 @@ func _move_along_path(_delta):
 		current_path.remove_at(0)
 
 func _do_work(_delta):
-	# 模拟工作中...
-	pass 
+	# 检查当前任务类型
+	if current_task:
+		match current_task.type:
+			TaskDataClass.Type.FEED:
+				_do_feeding()
+			TaskDataClass.Type.CLEAN:
+				_do_cleaning()
+
+func _do_feeding():
+	# 找到任务对应的动物
+	var target = current_task.target_node
+	if target and is_instance_valid(target):
+		var species = target.get_meta("species")
+		if species:
+			var food_type = "veg"
+			if species.diet == 1:  # CARNIVORE
+				food_type = "meat"
+			
+			# 喂食
+			var survival = get_node_or_null("/root/AnimalSurvival")
+			if survival:
+				survival.feed_animal(target, food_type)
+				print("🍖 ", agent_name, " 喂食了 ", species.species_name)
+	
+	# 完成任务
+	_complete_task()
+
+func _do_cleaning():
+	# 清理工作
+	print("🧹 ", agent_name, " 正在清理")
+	_complete_task()
+
+func _complete_task():
+	var tm = get_node_or_null("/root/TaskManager")
+	if tm and current_task:
+		tm.call("complete_task", current_task)
+	current_task = null
+	current_state = State.IDLE
 
 func _go_to_sleep():
 	current_state = State.EXHAUSTED
