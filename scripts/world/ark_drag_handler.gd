@@ -21,3 +21,5 @@ func _drop_data(at_position, data):
 			var camera = get_viewport().get_camera_2d()
 			var world_pos = camera.get_global_transform().affine_inverse() * at_position
 			ark.call("try_place_at_world_pos", world_pos, species)
+			# 隐藏预览框
+			ark.call("hide_preview")

@@ -77,32 +77,26 @@ func _pixel_to_grid(pixel_pos: Vector2) -> Vector2i:
 
 # --- 核心：模糊点击感应算法 ---
 func handle_manual_click(world_pos: Vector2):
-	# 允许点击点偏离地板中心轴上下各 1 格 (20px)
 	var gx = int(round((world_pos.x - ARK_START_X) / CELL_SIZE.x))
-	var py = world_pos.y
 	
-	print("DEBUG click at: ", world_pos, " gx=", gx, " py=", py)
-	
-	var target_gy = -1
+	# 找到最近的甲板
+	var best_gy = -1
+	var best_dist = 9999.0
 	for gy in DECK_Y_INDICES:
-		var floor_pixel_y = gy * 20
-		# 如果点击点在甲板逻辑线上下 30 像素内，视为命中该层
-		if abs(py - floor_pixel_y) < 30.0:
-			target_gy = gy
-			print("DEBUG: matched deck at gy=", gy)
-			break
+		var floor_y = gy * 20 - 10
+		var dist = abs(world_pos.y - floor_y)
+		if dist < best_dist:
+			best_dist = dist
+			best_gy = gy
 	
-	if target_gy != -1:
-		var coord = Vector2i(gx, target_gy)
-		print("DEBUG: checking coord=", coord, " in placed_animals=", placed_animals.has(coord))
+	if best_gy != -1 and best_dist < 30.0:
+		var coord = Vector2i(gx, best_gy)
 		if placed_animals.has(coord):
 			var species = placed_animals[coord]
 			var start_coord = coord
 			while placed_animals.has(start_coord + Vector2i(-1, 0)) and placed_animals[start_coord + Vector2i(-1, 0)] == species:
 				start_coord.x -= 1
 			_on_cage_triggered(species, start_coord)
-	else:
-		print("DEBUG: no deck matched, py=", py, " decks at=", DECK_Y_INDICES)
 
 func _on_cage_triggered(species, coord: Vector2i):
 	var visual_node = cage_visuals.get(coord)
@@ -122,13 +116,18 @@ func _on_cage_triggered(species, coord: Vector2i):
 func update_placement_preview(world_pos: Vector2, species):
 	var grid_x = round((world_pos.x - ARK_START_X) / CELL_SIZE.x)
 	var best_gy = -1
-	# 扩大检测范围，确保三层都能检测到
-	for gy in DECK_Y_INDICES:
-		if abs(world_pos.y - (gy * 20)) < 45.0: 
-			best_gy = gy
-			break
+	var best_dist = 9999.0
 	
-	if best_gy != -1:
+	# 找到最近的甲板中心
+	for gy in DECK_Y_INDICES:
+		var floor_y = gy * 20 - 10  # 甲板中心位置
+		var dist = abs(world_pos.y - floor_y)
+		if dist < best_dist:
+			best_dist = dist
+			best_gy = gy
+	
+	# 只在甲板附近时显示预览
+	if best_dist < 30.0:
 		preview_rect.visible = true
 		preview_rect.set_size(Vector2(species.width_in_cells * 20, 20))
 		preview_rect.set_position(Vector2(ARK_START_X + grid_x * 20, best_gy * 20 - 18))
@@ -139,10 +138,20 @@ func update_placement_preview(world_pos: Vector2, species):
 	else:
 		preview_rect.visible = false
 
+func hide_preview():
+	preview_rect.visible = false
+
 func try_place_at_world_pos(world_pos: Vector2, species) -> bool:
+	# 同样使用最近甲板逻辑
 	var best_gy = -1
+	var best_dist = 9999.0
 	for gy in DECK_Y_INDICES:
-		if abs(world_pos.y - (gy * 20)) < 45.0: best_gy = gy
+		var floor_y = gy * 20 - 10
+		var dist = abs(world_pos.y - floor_y)
+		if dist < best_dist:
+			best_dist = dist
+			best_gy = gy
+	
 	var grid_x = round((world_pos.x - ARK_START_X) / CELL_SIZE.x)
 	var snap_coord = Vector2i(int(grid_x), best_gy)
 	
