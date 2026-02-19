@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+PhaseManager="*res://scripts/globals/phase_manager.gd"
 TaskManager="*res://scripts/globals/task_manager.gd"
 GameManager="*res://scripts/globals/game_manager.gd"
 SelectionManager="*res://scripts/globals/selection_manager.gd"

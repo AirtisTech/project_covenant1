@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid_ark_int"]
+[gd_scene load_steps=8 format=3 uid="uid_ark_int"]
 
 [ext_resource type="Script" path="res://scripts/world/ark_system.gd" id="1_ark_sys"]
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="2_hud"]
 [ext_resource type="Script" path="res://scripts/world/game_camera.gd" id="3_camera"]
 [ext_resource type="Script" path="res://scripts/ui/animal_selector.gd" id="4_selector"]
 [ext_resource type="Script" path="res://scripts/ui/drag_receiver.gd" id="5_drag"]
+[ext_resource type="Script" path="res://scripts/world/water_visual.gd" id="6_water"]
+[ext_resource type="Script" path="res://scripts/ui/dev_test_panel.gd" id="7_dev"]
 
 [node name="ArkInterior" type="Node2D"]
 
@@ -12,6 +14,9 @@
 position = Vector2(640, 360)
 current = true
 script = ExtResource("3_camera")
+
+[node name="WaterVisual" type="Node2D" parent="."]
+script = ExtResource("6_water")
 
 [node name="ArkSystem" type="Node2D" parent="." groups=["ark_system"]]
 script = ExtResource("1_ark_sys")
@@ -105,3 +110,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 15
 alignment = 1
+
+[node name="DevTestPanel" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 100.0
+script = ExtResource("7_dev")
