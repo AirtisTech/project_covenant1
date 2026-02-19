@@ -109,6 +109,17 @@ func _update_weather(delta):
 		weather_intensity = randf() * 0.5 + 0.5 if is_storming else 0.0
 
 func _apply_ark_motion(delta):
+	# 只有当水位上升到一定程度时才摇晃（船在水中）
+	# 假设水位超过30%时船开始摇晃
+	var water_threshold = 0.3
+	
+	if flood_water_level < water_threshold:
+		# 水位还没到，停止摇晃
+		ark_tilt = lerp(ark_tilt, 0.0, delta * 2.0)
+		ark_roll = lerp(ark_roll, 0.0, delta * 2.0)
+		ark_tilt_changed.emit(ark_tilt)
+		return
+	
 	# 基于海浪和天气计算方舟摇晃
 	var target_tilt = 0.0
 	var target_roll = 0.0
