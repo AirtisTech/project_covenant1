@@ -81,22 +81,28 @@ func handle_manual_click(world_pos: Vector2):
 	var gx = int(round((world_pos.x - ARK_START_X) / CELL_SIZE.x))
 	var py = world_pos.y
 	
+	print("DEBUG click at: ", world_pos, " gx=", gx, " py=", py)
+	
 	var target_gy = -1
 	for gy in DECK_Y_INDICES:
 		var floor_pixel_y = gy * 20
-		# 如果点击点在甲板逻辑线上下 25 像素内，视为命中该层
-		if abs(py - floor_pixel_y) < 25.0:
+		# 如果点击点在甲板逻辑线上下 30 像素内，视为命中该层
+		if abs(py - floor_pixel_y) < 30.0:
 			target_gy = gy
+			print("DEBUG: matched deck at gy=", gy)
 			break
 	
 	if target_gy != -1:
 		var coord = Vector2i(gx, target_gy)
+		print("DEBUG: checking coord=", coord, " in placed_animals=", placed_animals.has(coord))
 		if placed_animals.has(coord):
 			var species = placed_animals[coord]
 			var start_coord = coord
 			while placed_animals.has(start_coord + Vector2i(-1, 0)) and placed_animals[start_coord + Vector2i(-1, 0)] == species:
 				start_coord.x -= 1
 			_on_cage_triggered(species, start_coord)
+	else:
+		print("DEBUG: no deck matched, py=", py, " decks at=", DECK_Y_INDICES)
 
 func _on_cage_triggered(species, coord: Vector2i):
 	var visual_node = cage_visuals.get(coord)
@@ -116,8 +122,9 @@ func _on_cage_triggered(species, coord: Vector2i):
 func update_placement_preview(world_pos: Vector2, species):
 	var grid_x = round((world_pos.x - ARK_START_X) / CELL_SIZE.x)
 	var best_gy = -1
+	# 扩大检测范围，确保三层都能检测到
 	for gy in DECK_Y_INDICES:
-		if abs(world_pos.y - (gy * 20)) < 40.0: 
+		if abs(world_pos.y - (gy * 20)) < 45.0: 
 			best_gy = gy
 			break
 	
@@ -135,7 +142,7 @@ func update_placement_preview(world_pos: Vector2, species):
 func try_place_at_world_pos(world_pos: Vector2, species) -> bool:
 	var best_gy = -1
 	for gy in DECK_Y_INDICES:
-		if abs(world_pos.y - (gy * 20)) < 40.0: best_gy = gy
+		if abs(world_pos.y - (gy * 20)) < 45.0: best_gy = gy
 	var grid_x = round((world_pos.x - ARK_START_X) / CELL_SIZE.x)
 	var snap_coord = Vector2i(int(grid_x), best_gy)
 	
