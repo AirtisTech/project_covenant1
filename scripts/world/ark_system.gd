@@ -12,6 +12,9 @@ var placed_animals: Dictionary = {}
 var cage_visuals: Dictionary = {} 
 var preview_rect: ColorRect
 
+# 摇晃相关
+var base_position: Vector2
+
 func _ready():
 	var gm = get_node_or_null("/root/GameManager")
 	if gm: gm.ark_system = self
@@ -19,6 +22,13 @@ func _ready():
 	_setup_drag_control()
 	_setup_visuals()
 	_setup_preview()
+	
+	base_position = position
+	
+	# 连接 PhaseManager 信号
+	var pm = get_node_or_null("/root/PhaseManager")
+	if pm:
+		pm.ark_tilt_changed.connect(_on_ark_tilt_changed)
 
 # 处理点击拆除
 func _input(event):
@@ -175,3 +185,12 @@ func remove_animal(coord: Vector2i):
 	if gm: gm.call("add_faith", species.placement_faith_cost)
 
 func get_path_to_pos(s, t): return PackedVector2Array([s, t])
+
+# 处理方舟摇晃
+func _on_ark_tilt_changed(tilt: float):
+	# 根据倾斜度调整位置
+	var offset_x = tilt * 30.0  # 左右倾斜
+	var offset_y = abs(tilt) * 10.0  # 向下倾斜
+	
+	position = base_position + Vector2(offset_x, offset_y)
+	rotation = tilt * 0.1  # 轻微旋转
