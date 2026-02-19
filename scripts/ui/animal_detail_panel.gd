@@ -1,7 +1,7 @@
+extends Control
+
 # 预加载类
 const AnimalSpeciesClass = preload("res://scripts/resources/animal_species.gd")
-
-extends Control
 
 var name_label: Label
 var desc_label: Label
