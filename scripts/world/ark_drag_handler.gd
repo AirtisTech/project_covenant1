@@ -25,12 +25,12 @@ func _drop_data(at_position, data):
 	# 隐藏预览框
 	_hide_preview()
 
-func _get_drag_data(at_position):
+func _get_drag_data(_at_position):
 	# 开始拖拽时隐藏预览
 	_hide_preview()
 	return null
 
-func _can_drop_data_fallback(at_position, _data):
+func _can_drop_data_fallback(_at_position, _data):
 	# 当拖拽离开区域时隐藏预览
 	_hide_preview()
 	return false
