@@ -31,7 +31,9 @@ func _spawn_family():
 		var data = FAMILY_DATA[i]
 		var human = HumanClass.new()
 		human.agent_name = data["name"]
-		human.position = Vector2(200 + i * 60, 350)
+		# 中层甲板 (index 1, Y=340)
+		human.position = Vector2(200 + i * 60, 340)
+		human.rest_position = Vector2(100 + i * 30, 340)  # 休息点也在中层
 		
 		# 设置颜色
 		for child in human.get_children():

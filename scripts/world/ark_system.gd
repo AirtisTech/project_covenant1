@@ -8,6 +8,19 @@ const GRID_WIDTH = 60
 const ARK_START_X = 40.0
 const DECK_Y_INDICES = [15, 17, 19]
 
+# 甲板层定义（从下到上）
+const DECK_INFO = {
+	0: {"y_index": 19, "y_pixel": 380, "name": "底层"},   # 最下层（船底）
+	1: {"y_index": 17, "y_pixel": 340, "name": "中层"},   # 中层
+	2: {"y_index": 15, "y_pixel": 300, "name": "上层"}    # 最上层
+}
+
+# 楼梯位置（每层之间的连接点）
+const STAIRS_POSITIONS = [
+	{"from_deck": 0, "to_deck": 1, "x": 100, "y_bottom": 360, "y_top": 320},  # 底层<->中层
+	{"from_deck": 1, "to_deck": 2, "x": 100, "y_bottom": 320, "y_top": 280}   # 中层<->上层
+]
+
 var placed_animals: Dictionary = {} 
 var cage_visuals: Dictionary = {} 
 var preview_rect: ColorRect
@@ -62,6 +75,41 @@ func _setup_visuals():
 		f.color = Color.SADDLE_BROWN
 		f.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(f)
+	
+	# 添加楼梯
+	_add_stairs()
+
+func _add_stairs():
+	# 绘制楼梯
+	for stairs in STAIRS_POSITIONS:
+		var x = stairs["x"]
+		var y_bottom = stairs["y_bottom"]
+		var y_top = stairs["y_top"]
+		
+		# 楼梯踏板
+		var num_steps = 4
+		for i in range(num_steps):
+			var step = ColorRect.new()
+			step.set_size(Vector2(20, 4))
+			step.set_position(Vector2(x + i * 15, y_bottom - i * ((y_bottom - y_top) / num_steps)))
+			step.color = Color(0.4, 0.25, 0.1)
+			step.z_index = -1
+			add_child(step)
+		
+		# 楼梯扶手柱
+		var post_left = ColorRect.new()
+		post_left.set_size(Vector2(3, y_bottom - y_top))
+		post_left.set_position(Vector2(x - 5, y_top))
+		post_left.color = Color(0.3, 0.2, 0.1)
+		post_left.z_index = -1
+		add_child(post_left)
+		
+		var post_right = ColorRect.new()
+		post_right.set_size(Vector2(3, y_bottom - y_top))
+		post_right.set_position(Vector2(x + num_steps * 15 + 2, y_top))
+		post_right.color = Color(0.3, 0.2, 0.1)
+		post_right.z_index = -1
+		add_child(post_right)
 
 func _setup_preview():
 	preview_rect = ColorRect.new()
@@ -222,6 +270,30 @@ func _on_ark_tilt_changed(tilt: float):
 	
 	position = base_position + Vector2(offset_x, offset_y)
 	rotation = tilt * 0.1  # 轻微旋转
+
+func get_deck_at_y(y: float) -> int:
+	# 获取指定 Y 坐标对应的甲板层索引
+	# 返回 0=底层, 1=中层, 2=上层，-1=不在甲板上
+	for i in range(DECK_INFO.size()):
+		var deck_y = DECK_INFO[i]["y_pixel"]
+		if abs(y - deck_y) < 20:
+			return i
+	return -1
+
+func get_stairs_in_range(from_deck: int, to_deck: int) -> Vector2:
+	# 获取连接两层甲板的楼梯中心位置
+	for stairs in STAIRS_POSITIONS:
+		if stairs["from_deck"] == from_deck and stairs["to_deck"] == to_deck:
+			return Vector2(stairs["x"], (stairs["y_bottom"] + stairs["y_top"]) / 2)
+		elif stairs["from_deck"] == to_deck and stairs["to_deck"] == from_deck:
+			return Vector2(stairs["x"], (stairs["y_bottom"] + stairs["y_top"]) / 2)
+	return Vector2(-1, -1)
+
+func get_deck_target_y(deck_index: int) -> float:
+	# 获取指定甲板层的目标 Y 坐标
+	if DECK_INFO.has(deck_index):
+		return DECK_INFO[deck_index]["y_pixel"]
+	return DECK_INFO[1]["y_pixel"]  # 默认返回中层
 
 func _on_ark_weight_changed(weight: float):
 	# 根据重量调整方舟漂浮高度

@@ -20,8 +20,12 @@ var selection_visual: ColorRect
 var stamina_bar: ColorRect 
 var target_position: Vector2 = Vector2.ZERO
 
+var current_deck: int = 1  # 当前所在的甲板层 (0=底层, 1=中层, 2=上层)
+var target_deck: int = 1  # 目标甲板层
+var is_using_stairs: bool = false  # 是否正在使用楼梯
+
 # 休息点
-var rest_position: Vector2 = Vector2(100, 400)
+var rest_position: Vector2 = Vector2(100, 340)
 
 func _ready():
 	add_to_group("agents")
@@ -203,4 +207,39 @@ func move_to(pos: Vector2):
 	current_task = null
 	target_position = pos
 	current_state = State.MOVING
+	
+	# 检查是否需要换层
+	var ark = get_ark_system()
+	if ark:
+		var current_y = global_position.y
+		var target_y = pos.y
+		
+		current_deck = ark.get_deck_at_y(current_y)
+		target_deck = ark.get_deck_at_y(target_y)
+		
+		# 如果需要换层，计算经过楼梯的路径
+		if current_deck != target_deck and current_deck != -1 and target_deck != -1:
+			_calculate_path_with_stairs(pos, current_deck, target_deck, ark)
+		else:
+			# 同一层，直接移动
+			pass
+	
 	print("🏃 ", agent_name, " 前往 ", pos)
+
+func get_ark_system():
+	var root = get_tree().root
+	if root:
+		return root.find_child("ArkSystem", true, false)
+	return null
+
+func _calculate_path_with_stairs(target_pos: Vector2, from_deck: int, to_deck: int, ark):
+	# 计算经过楼梯的路径
+	var stairs_pos = ark.get_stairs_in_range(from_deck, to_deck)
+	
+	if stairs_pos.x > 0:
+		# 路径：当前位置 -> 楼梯 -> 目标位置
+		var deck_y = ark.get_deck_target_y(to_deck)
+		target_position = Vector2(stairs_pos.x, deck_y)
+		
+		# 标记即将使用楼梯
+		print("🪜 ", agent_name, " 需要使用楼梯从 ", from_deck, " 层到 ", to_deck, " 层")
