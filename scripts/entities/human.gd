@@ -11,13 +11,17 @@ var stamina: float = 100.0
 const STAMINA_DRAIN_RATE = 5.0
 const STAMINA_RECOVERY_RATE = 2.0
 
-enum State { IDLE, MOVING, WORKING, EXHAUSTED }
+enum State { IDLE, MOVING, WORKING, EXHAUSTED, RESTING }
 var current_state: State = State.IDLE
 
 var current_task = null
 var current_path: PackedVector2Array = []
 var selection_visual: ColorRect
 var stamina_bar: ColorRect 
+var target_position: Vector2 = Vector2.ZERO
+
+# 休息点
+var rest_position: Vector2 = Vector2(100, 400)
 
 func _ready():
 	add_to_group("agents")
@@ -81,27 +85,31 @@ func _physics_process(delta):
 	_update_stamina(delta)
 	match current_state:
 		State.IDLE: _handle_idle()
-		State.MOVING: _move_along_path(delta)
+		State.MOVING: _move_to_target(delta)
 		State.WORKING: _do_work(delta)
 		State.EXHAUSTED: _handle_exhaustion()
+		State.RESTING: _handle_resting(delta)
 
 func _update_stamina(delta):
 	if current_state == State.WORKING:
 		stamina = stamina - (STAMINA_DRAIN_RATE * delta)
+	elif current_state == State.MOVING:
+		stamina = stamina - (STAMINA_DRAIN_RATE * 0.5 * delta)
 	else:
 		stamina = stamina + (STAMINA_RECOVERY_RATE * delta)
 	
 	stamina = clamp(stamina, 0, 100)
-	# 核心修复：不能直接修改 size.x，必须重新赋值整个 Vector2
 	stamina_bar.size = Vector2((stamina / 100.0) * 30.0, 4)
 	stamina_bar.color = Color.GREEN.lerp(Color.RED, 1.0 - (stamina / 100.0))
 	
 	if stamina <= 0 and current_state != State.EXHAUSTED:
-		_go_to_sleep()
+		_go_to_rest()
 
 func _handle_idle():
 	if stamina > 30.0:
 		_seek_task()
+	else:
+		current_state = State.RESTING
 
 func _seek_task():
 	var tm = get_node_or_null("/root/TaskManager")
@@ -109,60 +117,52 @@ func _seek_task():
 		current_task = tm.call("request_task", self, []) 
 		var gm = get_node_or_null("/root/GameManager")
 		if current_task and gm and gm.get("ark_system"):
-			current_path = gm.get("ark_system").get_path_to_pos(global_position, current_task.position)
+			target_position = current_task.position
 			current_state = State.MOVING
 
-# 点击移动接口
-func move_to(target_pos: Vector2):
-	# 取消当前任务
-	current_task = null
-	current_path = PackedVector2Array([target_pos])
-	current_state = State.MOVING
-	print("🏃 ", agent_name, " starting move to ", target_pos)
-
-func _move_along_path(_delta):
-	if current_path.is_empty():
-		velocity = Vector2.ZERO
-		current_state = State.WORKING
-		return
-	var target_pos = current_path[0]
-	var direction = (target_pos - global_position).normalized()
+func _move_to_target(delta):
+	var direction = (target_position - global_position).normalized()
 	velocity = direction * move_speed
 	move_and_slide()
-	if global_position.distance_to(target_pos) < 10.0:
-		current_path.remove_at(0)
+	
+	if global_position.distance_to(target_position) < 10.0:
+		velocity = Vector2.ZERO
+		current_state = State.WORKING
 
 func _do_work(_delta):
-	# 检查当前任务类型
 	if current_task:
 		match current_task.type:
 			TaskDataClass.Type.FEED:
 				_do_feeding()
 			TaskDataClass.Type.CLEAN:
 				_do_cleaning()
+			TaskDataClass.Type.REPAIR:
+				_do_repair()
+			_:
+				_complete_task()
 
 func _do_feeding():
-	# 找到任务对应的动物
 	var target = current_task.target_node
 	if target and is_instance_valid(target):
 		var species = target.get_meta("species")
 		if species:
 			var food_type = "veg"
-			if species.diet == 1:  # CARNIVORE
+			if species.diet == 1:
 				food_type = "meat"
 			
-			# 喂食
 			var survival = get_node_or_null("/root/AnimalSurvival")
 			if survival:
 				survival.feed_animal(target, food_type)
 				print("🍖 ", agent_name, " 喂食了 ", species.species_name)
 	
-	# 完成任务
 	_complete_task()
 
 func _do_cleaning():
-	# 清理工作
 	print("🧹 ", agent_name, " 正在清理")
+	_complete_task()
+
+func _do_repair():
+	print("🔧 ", agent_name, " 正在修理")
 	_complete_task()
 
 func _complete_task():
@@ -172,11 +172,34 @@ func _complete_task():
 	current_task = null
 	current_state = State.IDLE
 
-func _go_to_sleep():
-	current_state = State.EXHAUSTED
+func _go_to_rest():
+	current_state = State.RESTING
 	current_task = null
+	target_position = rest_position
+	print("💤 ", agent_name, " 累了，需要休息")
+
+func _handle_resting(delta):
+	if stamina >= 100.0:
+		current_state = State.IDLE
+		print("💪 ", agent_name, " 休息好了")
+		return
+	
+	# 走向休息点
+	if global_position.distance_to(rest_position) > 10.0:
+		var direction = (rest_position - global_position).normalized()
+		velocity = direction * move_speed * 0.5
+		move_and_slide()
+	else:
+		# 在休息点恢复体力
+		pass
 
 func _handle_exhaustion():
 	velocity = Vector2.ZERO
-	if stamina >= 100.0:
+	if stamina >= 50.0:
 		current_state = State.IDLE
+
+func move_to(pos: Vector2):
+	current_task = null
+	target_position = pos
+	current_state = State.MOVING
+	print("🏃 ", agent_name, " 前往 ", pos)
