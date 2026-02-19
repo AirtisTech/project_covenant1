@@ -139,8 +139,8 @@ func _apply_ark_motion(delta):
 
 func get_water_height() -> float:
 	# 返回当前水位高度（像素）
-	# 方舟甲板在 Y=300-380，所以水位需要超过 400 才能淹没
-	return flood_water_level * 600.0
+	# 方舟甲板在 Y=300-380，水位要超过 1100 才能淹没
+	return flood_water_level * 1200.0
 
 func get_wave_offset(x: float) -> float:
 	# 获取指定x位置的波浪偏移
