@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 
 PhaseManager="*res://scripts/globals/phase_manager.gd"
 AnimalSurvival="*res://scripts/globals/animal_survival.gd"
+DisasterSystem="*res://scripts/globals/disaster_system.gd"
 TaskManager="*res://scripts/globals/task_manager.gd"
 GameManager="*res://scripts/globals/game_manager.gd"
 SelectionManager="*res://scripts/globals/selection_manager.gd"
