@@ -1,0 +1,82 @@
+[gd_scene load_steps=5 format=3 uid="uid_prep"]
+
+[ext_resource type="Script" path="res://scripts/world/preparation_scene.gd" id="1_prep_scene"]
+[ext_resource type="Script" path="res://scripts/world/ark_system.gd" id="2_ark_system"]
+[ext_resource type="Script" path="res://scripts/entities/human.gd" id="3_human"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="4_hud"]
+
+[node name="PreparationScene" type="Node2D"]
+script = ExtResource("1_prep_scene")
+
+[node name="ArkSystem" type="Node2D" parent="." groups=["ark_system"]]
+script = ExtResource("2_ark_system")
+
+[node name="StructureLayer" type="TileMapLayer" parent="ArkSystem"]
+
+[node name="ObjectLayer" type="TileMapLayer" parent="ArkSystem"]
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Human_Noah" type="CharacterBody2D" parent="Entities"]
+position = Vector2(640, 300)
+script = ExtResource("3_human")
+agent_name = "Noah"
+prefers_work = true
+prefers_hauling = false
+
+[node name="Human_Shem" type="CharacterBody2D" parent="Entities"]
+position = Vector2(600, 300)
+script = ExtResource("3_human")
+agent_name = "Shem"
+prefers_work = false
+prefers_hauling = true
+
+[node name="Human_Ham" type="CharacterBody2D" parent="Entities"]
+position = Vector2(680, 300)
+script = ExtResource("3_human")
+agent_name = "Ham"
+prefers_work = false
+prefers_hauling = true
+
+[node name="Human_Japheth" type="CharacterBody2D" parent="Entities"]
+position = Vector2(720, 300)
+script = ExtResource("3_human")
+agent_name = "Japheth"
+prefers_work = false
+prefers_hauling = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_hud")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 200.0
+
+[node name="DayLabel" type="Label" parent="CanvasLayer/HUD/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+text = "阶段一：集体建造"
+
+[node name="PhaseLabel" type="Label" parent="CanvasLayer/HUD/VBoxContainer"]
+layout_mode = 2
+text = "距离洪水爆发还有 7 天"
+
+[node name="ResourceLabel" type="Label" parent="CanvasLayer/HUD/VBoxContainer"]
+layout_mode = 2
+text = "歌斐木: 0  松香: 0"
+
+[node name="TaskLabel" type="Label" parent="CanvasLayer/HUD/VBoxContainer"]
+layout_mode = 2
+text = "团队协作进行中..."
