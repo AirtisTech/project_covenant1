@@ -30,7 +30,7 @@ func _build_menu():
 		# 初始化显示状态
 		card.visible = not species.is_placed
 
-func _create_card(species: AnimalSpecies) -> Button:
+func _create_card(species) -> Button:
 	var btn = Button.new()
 	btn.custom_minimum_size = Vector2(110, 140)
 	btn.set_script(load("res://scripts/ui/animal_card.gd"))
@@ -38,7 +38,7 @@ func _create_card(species: AnimalSpecies) -> Button:
 	return btn
 
 # --- 核心：实时刷新菜单 ---
-func _on_species_status_changed(species: AnimalSpecies, is_placed: bool):
+func _on_species_status_changed(species, is_placed: bool):
 	if card_nodes.has(species):
 		# 如果已在船上，隐藏卡片；如果被拆除，显示卡片
 		card_nodes[species].visible = not is_placed

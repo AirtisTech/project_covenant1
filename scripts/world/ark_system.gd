@@ -1,4 +1,7 @@
+# 预加载类
 extends Node2D
+
+const AnimalSpeciesClass = preload("res://scripts/resources/animal_species.gd")
 
 const CELL_SIZE = Vector2(20.0, 20.0)
 const GRID_WIDTH = 60
@@ -76,7 +79,7 @@ func handle_manual_click(world_pos: Vector2):
 				start_coord.x -= 1
 			_on_cage_triggered(species, start_coord)
 
-func _on_cage_triggered(species: AnimalSpecies, coord: Vector2i):
+func _on_cage_triggered(species, coord: Vector2i):
 	var visual_node = cage_visuals.get(coord)
 	if not visual_node: return
 	
@@ -91,7 +94,7 @@ func _on_cage_triggered(species: AnimalSpecies, coord: Vector2i):
 		var top_center = screen_pos + Vector2(visual_node.size.x * 0.5, 0)
 		panel.call("show_at_position", species, top_center, true, coord)
 
-func update_placement_preview(world_pos: Vector2, species: AnimalSpecies):
+func update_placement_preview(world_pos: Vector2, species):
 	var grid_x = floor((world_pos.x - ARK_START_X) / CELL_SIZE.x)
 	var best_gy = -1
 	for gy in DECK_Y_INDICES:
@@ -110,7 +113,7 @@ func update_placement_preview(world_pos: Vector2, species: AnimalSpecies):
 	else:
 		preview_rect.visible = false
 
-func try_place_at_world_pos(world_pos: Vector2, species: AnimalSpecies) -> bool:
+func try_place_at_world_pos(world_pos: Vector2, species) -> bool:
 	var best_gy = -1
 	for gy in DECK_Y_INDICES:
 		if abs(world_pos.y - (gy * 20)) < 40.0: best_gy = gy
@@ -124,14 +127,14 @@ func try_place_at_world_pos(world_pos: Vector2, species: AnimalSpecies) -> bool:
 			return true
 	return false
 
-func _can_place_here(coord: Vector2i, species: AnimalSpecies) -> bool:
+func _can_place_here(coord: Vector2i, species) -> bool:
 	if coord.x < 0 or (coord.x + species.width_in_cells) > GRID_WIDTH: return false
 	if not DECK_Y_INDICES.has(coord.y): return false
 	for dx in range(species.width_in_cells):
 		if placed_animals.has(coord + Vector2i(dx, 0)): return false
 	return true
 
-func _do_place(coord: Vector2i, species: AnimalSpecies):
+func _do_place(coord: Vector2i, species):
 	for dx in range(species.width_in_cells):
 		placed_animals[coord + Vector2i(dx, 0)] = species
 	

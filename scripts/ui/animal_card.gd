@@ -1,18 +1,21 @@
 extends Button
 
-var species: AnimalSpecies
+# 预加载类
+const AnimalSpeciesClass = preload("res://scripts/resources/animal_species.gd")
+
+var species
 var icon_rect: ColorRect
 var name_label: Label
 var stats_label: Label
 
 var drag_happened: bool = false
 
-func setup(p_species: AnimalSpecies):
+func setup(p_species):
 	species = p_species
 	_build_ui_layout()
 	name_label.text = species.species_name
 	icon_rect.set_deferred("color", species.visual_color)
-	var diet_icon = "🍎" if species.diet == AnimalSpecies.Diet.HERBIVORE else "🥩"
+	var diet_icon = "🍎" if species.diet == AnimalSpeciesClass.Diet.HERBIVORE else "🥩"
 	stats_label.text = "%s | W:%.1f" % [diet_icon, species.weight]
 	
 	if not self.is_connected("pressed", _on_card_pressed):
