@@ -78,8 +78,11 @@ func _get_phase_name() -> String:
 
 func _start_flood():
 	print("🌊 FLOOD BEGINS! 40 days of survival...")
-	flood_water_level = 0.0
-	flood_speed = 1.0 / 40.0  # 40天涨满
+	# 洪水直接淹没，无需慢慢上升
+	flood_water_level = 1.0
+	flood_speed = 0.0
+	# 立即触发水位变化信号
+	flood_level_changed.emit(flood_water_level)
 
 func _start_drift():
 	print("🛶 Entering Drift phase - 150 days to find land...")
@@ -88,7 +91,7 @@ func _start_drift():
 
 func _process(delta):
 	if current_phase == Phase.DELUGE:
-		_update_flood(delta)
+		# 洪水已直接满，不需要更新水位
 		_update_waves(delta)
 		_update_weather(delta)
 		_apply_ark_motion(delta)
