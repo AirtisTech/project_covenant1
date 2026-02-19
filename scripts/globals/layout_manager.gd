@@ -2,17 +2,108 @@ extends Node
 
 # 预加载类
 const AnimalSpeciesClass = preload("res://scripts/resources/animal_species.gd")
+const FacilityClass = preload("res://scripts/resources/facility.gd")
 
 var species_list: Array = []
+var facility_list: Array = []
 
 signal species_status_changed(species, is_placed: bool)
+signal facility_status_changed(facility, is_placed: bool)
 
 func _ready():
 	_init_list()
+	_init_facilities()
 
 func set_species_placed(species, status: bool):
 	species.is_placed = status
 	species_status_changed.emit(species, status)
+
+func set_facility_placed(facility, status: bool):
+	facility.is_placed = status
+	facility_status_changed.emit(facility, status)
+
+func _init_facilities():
+	# 动物栏
+	var animal_pen = FacilityClass.new()
+	animal_pen.facility_name = "动物栏"
+	animal_pen.description = "用于安置动物的围栏"
+	animal_pen.type = FacilityClass.FacilityType.ANIMAL_PEN
+	animal_pen.width_cells = 3
+	animal_pen.height_cells = 1
+	animal_pen.faith_cost = 1.0
+	animal_pen.capacity = 4
+	animal_pen.visual_color = Color(0.5, 0.35, 0.2)
+	facility_list.append(animal_pen)
+	
+	# 厨房
+	var kitchen = FacilityClass.new()
+	kitchen.facility_name = "厨房"
+	kitchen.description = "烹饪食物的地方"
+	kitchen.type = FacilityClass.FacilityType.KITCHEN
+	kitchen.width_cells = 2
+	kitchen.height_cells = 1
+	kitchen.faith_cost = 1.5
+	kitchen.resource_production = 1.0
+	kitchen.visual_color = Color(0.8, 0.6, 0.4)
+	facility_list.append(kitchen)
+	
+	# 卧室
+	var bedroom = FacilityClass.new()
+	bedroom.facility_name = "卧室"
+	bedroom.description = "家人休息的地方"
+	bedroom.type = FacilityClass.FacilityType.BEDROOM
+	bedroom.width_cells = 3
+	bedroom.height_cells = 1
+	bedroom.faith_cost = 2.0
+	bedroom.capacity = 2
+	bedroom.visual_color = Color(0.6, 0.5, 0.7)
+	facility_list.append(bedroom)
+	
+	# 食物储藏室
+	var food_storage = FacilityClass.new()
+	food_storage.facility_name = "食物储藏室"
+	food_storage.description = "存放食物的空间"
+	food_storage.type = FacilityClass.FacilityType.FOOD_STORAGE
+	food_storage.width_cells = 4
+	food_storage.height_cells = 1
+	food_storage.faith_cost = 1.5
+	food_storage.capacity = 20
+	food_storage.visual_color = Color(0.7, 0.5, 0.3)
+	facility_list.append(food_storage)
+	
+	# 水箱
+	var water_tank = FacilityClass.new()
+	water_tank.facility_name = "水箱"
+	water_tank.description = "储存饮用水的容器"
+	water_tank.type = FacilityClass.FacilityType.WATER_TANK
+	water_tank.width_cells = 2
+	water_tank.height_cells = 1
+	water_tank.faith_cost = 1.0
+	water_tank.capacity = 15
+	water_tank.visual_color = Color(0.3, 0.6, 0.9)
+	facility_list.append(water_tank)
+	
+	# 医务室
+	var medical_bay = FacilityClass.new()
+	medical_bay.facility_name = "医务室"
+	medical_bay.description = "治疗伤病的地方"
+	medical_bay.type = FacilityClass.FacilityType.MEDICAL_BAY
+	medical_bay.width_cells = 2
+	medical_bay.height_cells = 1
+	medical_bay.faith_cost = 2.5
+	medical_bay.visual_color = Color(0.9, 0.9, 0.9)
+	facility_list.append(medical_bay)
+	
+	# 工作间
+	var workshop = FacilityClass.new()
+	workshop.facility_name = "工作间"
+	workshop.description = "制作和修理物品的地方"
+	workshop.type = FacilityClass.FacilityType.WORKSHOP
+	workshop.width_cells = 3
+	workshop.height_cells = 1
+	workshop.faith_cost = 2.0
+	workshop.visual_color = Color(0.5, 0.4, 0.3)
+	facility_list.append(workshop)
 
 func _init_list():
 	var sheep = AnimalSpeciesClass.new()

@@ -36,6 +36,7 @@ signal day_changed(day: int)
 signal flood_level_changed(level: float)
 signal ark_tilt_changed(tilt: float)
 signal ark_weight_changed(weight: float)
+signal entered_ark()  # 家人登船
 
 func _ready():
 	print("📅 Phase: Preparation Day 1/7")
@@ -77,6 +78,7 @@ func _change_to_next_phase():
 			current_phase = Phase.DELUGE
 			current_day = 1
 			_start_flood()
+			entered_ark.emit()  # 家人登船
 		Phase.DELUGE:
 			current_phase = Phase.DRIFT
 			current_day = 1

@@ -17,8 +17,12 @@ const FAMILY_DATA = [
 ]
 
 func _ready():
-	_spawn_family()
-	print("👨‍👩‍👦‍👦 Noah's family spawned: ", family_members.size(), " members")
+	# 连接到 PhaseManager，只有在洪水阶段家人才会出现在方舟上
+	var pm = get_node_or_null("/root/PhaseManager")
+	if pm:
+		pm.entered_ark.connect(_spawn_family)
+	
+	print("👨‍👩‍👦‍👦 Family ready - will board ark when flood begins")
 
 func _spawn_family():
 	var ark = get_tree().root.find_child("ArkSystem", true, false)
