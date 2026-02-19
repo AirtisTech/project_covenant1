@@ -7,10 +7,13 @@ var family_members: Array = []
 
 const FAMILY_DATA = [
 	{"name": "挪亚", "color": Color.RED},
-	{"name": "妻子", "color": Color.PINK},
+	{"name": "挪亚之妻", "color": Color.PINK},
 	{"name": "闪", "color": Color.ORANGE},
+	{"name": "闪之妻", "color": Color(1, 0.5, 0.5)},
 	{"name": "含", "color": Color.YELLOW},
-	{"name": "雅弗", "color": Color.CYAN}
+	{"name": "含之妻", "color": Color(0.5, 1, 0.5)},
+	{"name": "雅弗", "color": Color.CYAN},
+	{"name": "雅弗之妻", "color": Color(0.5, 0.5, 1)}
 ]
 
 func _ready():
