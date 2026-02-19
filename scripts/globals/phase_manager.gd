@@ -38,6 +38,11 @@ func advance_day():
 	current_day += 1
 	day_changed.emit(current_day)
 	
+	# 处理动物生存（每天）
+	var survival = get_node_or_null("/root/AnimalSurvival")
+	if survival:
+		survival.process_daily()
+	
 	# 检查阶段转换
 	var days_in_phase = phase_days[current_phase]
 	if current_day > days_in_phase:

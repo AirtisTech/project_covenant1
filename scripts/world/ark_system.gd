@@ -165,6 +165,12 @@ func _do_place(coord: Vector2i, species):
 	add_child(v)
 	cage_visuals[coord] = v
 	
+	# 注册到生存系统
+	var survival = get_node_or_null("/root/AnimalSurvival")
+	if survival:
+		v.set_meta("species", species)
+		survival.register_animal(v)
+	
 	var lm = get_node_or_null("/root/LayoutManager")
 	if lm: lm.call("set_species_placed", species, true)
 
@@ -177,7 +183,12 @@ func remove_animal(coord: Vector2i):
 	for dx in range(species.width_in_cells):
 		placed_animals.erase(Vector2i(start_x + dx, coord.y))
 	if cage_visuals.has(Vector2i(start_x, coord.y)):
-		cage_visuals[Vector2i(start_x, coord.y)].queue_free()
+		var visual = cage_visuals[Vector2i(start_x, coord.y)]
+		# 从生存系统移除
+		var survival = get_node_or_null("/root/AnimalSurvival")
+		if survival:
+			survival.unregister_animal(visual)
+		visual.queue_free()
 		cage_visuals.erase(Vector2i(start_x, coord.y))
 	var lm = get_node_or_null("/root/LayoutManager")
 	if lm: lm.call("set_species_placed", species, false)
