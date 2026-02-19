@@ -112,6 +112,14 @@ func _seek_task():
 			current_path = gm.get("ark_system").get_path_to_pos(global_position, current_task.position)
 			current_state = State.MOVING
 
+# 点击移动接口
+func move_to(target_pos: Vector2):
+	# 取消当前任务
+	current_task = null
+	current_path = PackedVector2Array([target_pos])
+	current_state = State.MOVING
+	print("🏃 ", agent_name, " starting move to ", target_pos)
+
 func _move_along_path(_delta):
 	if current_path.is_empty():
 		velocity = Vector2.ZERO
