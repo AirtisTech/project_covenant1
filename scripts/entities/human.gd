@@ -11,10 +11,11 @@ var stamina: float = 100.0
 const STAMINA_DRAIN_RATE = 5.0
 const STAMINA_RECOVERY_RATE = 2.0
 
-enum State { IDLE, MOVING, WORKING, EXHAUSTED, RESTING }
+enum State { IDLE, MOVING, WORKING, EXHAUSTED, RESTING, PLAYER_ASSIGNED }
 var current_state: State = State.IDLE
 
 var current_task = null
+var player_assigned_task: bool = false  # 是否是玩家指派的任务
 var current_path: PackedVector2Array = []
 var selection_visual: ColorRect
 var stamina_bar: ColorRect 
@@ -86,6 +87,14 @@ func _on_input_event(_viewport, event, _idx):
 func set_selection(is_selected: bool):
 	selection_visual.visible = is_selected
 
+# 玩家指派任务
+func assign_task(task_type, target_pos: Vector2):
+	current_task = TaskDataClass.new(task_type, target_pos, 1, null, "veg")
+	player_assigned_task = true
+	target_position = target_pos
+	current_state = State.MOVING
+	print("📋 玩家指派任务给 ", agent_name, ": ", task_type)
+
 func _physics_process(delta):
 	_update_stamina(delta)
 	match current_state:
@@ -94,6 +103,7 @@ func _physics_process(delta):
 		State.WORKING: _do_work(delta)
 		State.EXHAUSTED: _handle_exhaustion()
 		State.RESTING: _handle_resting(delta)
+		State.PLAYER_ASSIGNED: _move_to_target(delta)
 
 func _update_stamina(delta):
 	if current_state == State.WORKING:
@@ -119,11 +129,49 @@ func _handle_idle():
 func _seek_task():
 	var tm = get_node_or_null("/root/TaskManager")
 	if tm:
+		# 先尝试获取系统任务
 		current_task = tm.call("request_task", self, []) 
-		var gm = get_node_or_null("/root/GameManager")
-		if current_task and gm and gm.get("ark_system"):
-			target_position = current_task.position
+		if current_task:
+			var gm = get_node_or_null("/root/GameManager")
+			if gm and gm.get("ark_system"):
+				target_position = current_task.position
+				current_state = State.MOVING
+				return
+	
+	# 没有任务时，自动寻找工作
+	_auto_find_work()
+
+func _auto_find_work():
+	# 优先级：1. 喂饥饿的动物 2. 清理 3. 修理 4. 休息
+	var survival = get_node_or_null("/root/AnimalSurvival")
+	
+	# 1. 检查有没有饥饿的动物需要喂
+	if survival:
+		var hungry_animals = survival.get_hungry_animals()
+		if not hungry_animals.is_empty():
+			var animal = hungry_animals[0]
+			var species = animal.get_meta("species")
+			var food_type = "veg"
+			if species and species.diet == 1:
+				food_type = "meat"
+			
+			current_task = TaskDataClass.new(TaskDataClass.Type.FEED, animal.global_position, 1, animal, food_type)
+			target_position = animal.global_position
 			current_state = State.MOVING
+			player_assigned_task = false
+			print("🤖 ", agent_name, " 自动去寻找饥饿的动物")
+			return
+	
+	# 2. 随机进行清理或修理
+	if randf() < 0.5:
+		current_task = TaskDataClass.new(TaskDataClass.Type.CLEAN, global_position + Vector2(randf_range(-50, 50), 0))
+	else:
+		current_task = TaskDataClass.new(TaskDataClass.Type.REPAIR, global_position + Vector2(randf_range(-50, 50), 0))
+	
+	target_position = current_task.position
+	current_state = State.MOVING
+	player_assigned_task = false
+	print("🤖 ", agent_name, " 自动开始工作")
 
 func _move_to_target(delta):
 	var direction = (target_position - global_position).normalized()
