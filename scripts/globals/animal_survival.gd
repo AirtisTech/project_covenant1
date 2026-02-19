@@ -16,6 +16,7 @@ const FAITH_DRAIN: float = 5.0     # 动物死亡时信仰损失
 signal animal_hunger_changed(animal, hunger: float)
 signal animal_health_changed(animal, health: float)
 signal animal_died(animal)
+signal animal_born(species, count: int)  # 新增：动物出生信号
 signal daily_survival_report(hungry: int, healthy: int, dead: int)
 
 func _ready():
@@ -77,6 +78,50 @@ func process_daily():
 	
 	daily_survival_report.emit(hungry_count, healthy_count, dead_count)
 	print("📊 Daily Report - Hungry: %d, Healthy: %d, Dead: %d" % [hungry_count, healthy_count, dead_count])
+	
+	# 繁殖系统：喂饱的动物有机会繁殖
+	_process_breeding()
+
+func _process_breeding():
+	# 只有健康且吃饱的动物才能繁殖
+	var breeding_chance = 0.1  # 10% 概率
+	
+	for animal in animals:
+		if not is_instance_valid(animal):
+			continue
+		
+		var hunger = animal.get_meta("hunger", 0.0)
+		var health = animal.get_meta("health", 100.0)
+		
+		# 只有吃饱(饥饿值<30)且健康(>70)的动物才能繁殖
+		if hunger < 30 and health > 70:
+			if randf() < breeding_chance:
+				var species = animal.get_meta("species")
+				if species:
+					_breed_animal(species)
+
+func _breed_animal(species):
+	# 繁殖成功，添加新动物
+	var ark = get_tree().root.find_child("ArkSystem", true, false)
+	if not ark:
+		return
+	
+	# 创建新动物
+	var new_animal = ColorRect.new()
+	new_animal.size = Vector2(16, 12)
+	new_animal.color = species.visual_color
+	new_animal.position = species.get("last_placed_pos", Vector2(200, 340)) + Vector2(randf_range(-30, 30), 0)
+	new_animal.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ark.add_child(new_animal)
+	
+	# 注册到生存系统
+	new_animal.set_meta("species", species)
+	new_animal.set_meta("hunger", 0.0)
+	new_animal.set_meta("health", 100.0)
+	register_animal(new_animal)
+	
+	animal_born.emit(species, 1)
+	print("🐣 %s 繁殖了新一代！" % species.species_name)
 
 func _create_feeding_task(animal):
 	var tm = get_node_or_null("/root/TaskManager")
