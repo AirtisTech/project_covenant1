@@ -1052,3 +1052,109 @@ func _init_list():
 	komodo.placement_faith_cost = 3.0
 	komodo.visual_color = Color(0.35, 0.4, 0.35)
 	species_list.append(komodo)
+	
+	# ===== 更多独特动物 =====
+	var lemur = AnimalSpeciesClass.new()
+	lemur.species_name = "Lemur"
+	lemur.description = "马达加斯加的灵长类。"
+	lemur.is_clean = true
+	lemur.base_width_cubits = 2.0
+	lemur.base_weight = 0.4
+	lemur.placement_faith_cost = 0.5
+	lemur.visual_color = Color(0.55, 0.5, 0.45)
+	species_list.append(lemur)
+	
+	var gibbon = AnimalSpeciesClass.new()
+	gibbon.species_name = "Gibbon"
+	gibbon.description = "敏捷的长臂猿。"
+	gibbon.is_clean = true
+	gibbon.base_width_cubits = 2.5
+	gibbon.base_weight = 0.6
+	gibbon.placement_faith_cost = 0.6
+	gibbon.visual_color = Color(0.4, 0.35, 0.3)
+	species_list.append(gibbon)
+	
+	var orangutan = AnimalSpeciesClass.new()
+	orangutan.species_name = "Orangutan"
+	orangutan.description = "红毛猩猩，聪明的灵长类。"
+	orangutan.is_clean = true
+	orangutan.base_width_cubits = 4.0
+	orangutan.base_weight = 3.0
+	orangutan.placement_faith_cost = 1.5
+	orangutan.visual_color = Color(0.6, 0.4, 0.25)
+	species_list.append(orangutan)
+	
+	var baboon = AnimalSpeciesClass.new()
+	baboon.species_name = "Baboon"
+	baboon.description = "大型非洲猴类。"
+	baboon.is_clean = false
+	baboon.diet = AnimalSpeciesClass.Diet.OMNIVORE
+	baboon.base_width_cubits = 3.5
+	baboon.base_weight = 2.0
+	baboon.placement_faith_cost = 1.0
+	baboon.visual_color = Color(0.45, 0.4, 0.35)
+	species_list.append(baboon)
+	
+	var lemming = AnimalSpeciesClass.new()
+	lemming.species_name = "Lemming"
+	lemming.description = "北极的小型啮齿动物。"
+	lemming.is_clean = true
+	lemming.base_width_cubits = 1.0
+	lemming.base_weight = 0.08
+	lemming.placement_faith_cost = 0.1
+	lemming.visual_color = Color(0.5, 0.45, 0.4)
+	species_list.append(lemming)
+	
+	var arctic_fox = AnimalSpeciesClass.new()
+	arctic_fox.species_name = "Arctic Fox"
+	arctic_fox.description = "北极狐，白色的极地猎手。"
+	arctic_fox.is_clean = false
+	arctic_fox.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	arctic_fox.base_width_cubits = 2.5
+	arctic_fox.base_weight = 0.8
+	arctic_fox.placement_faith_cost = 0.8
+	arctic_fox.visual_color = Color(0.9, 0.95, 1.0)
+	species_list.append(arctic_fox)
+	
+	var polar_bear = AnimalSpeciesClass.new()
+	polar_bear.species_name = "Polar Bear"
+	polar_bear.description = "北极熊，极地霸主。"
+	polar_bear.is_clean = false
+	polar_bear.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	polar_bear.base_width_cubits = 10.0
+	polar_bear.base_weight = 10.0
+	polar_bear.placement_faith_cost = 4.5
+	polar_bear.visual_color = Color(0.95, 0.95, 0.95)
+	species_list.append(polar_bear)
+	
+	var wolverine = AnimalSpeciesClass.new()
+	wolverine.species_name = "Wolverine"
+	wolverine.description = "凶猛的小型猛兽。"
+	wolverine.is_clean = false
+	wolverine.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	wolverine.base_width_cubits = 3.0
+	wolverine.base_weight = 1.5
+	wolverine.placement_faith_cost = 1.2
+	wolverine.visual_color = Color(0.3, 0.25, 0.2)
+	species_list.append(wolverine)
+	
+	var pangolin2 = AnimalSpeciesClass.new()
+	pangolin2.species_name = "Pangolin"
+	pangolin2.description = "穿山甲，有鳞哺乳动物。"
+	pangolin2.is_clean = false
+	pangolin2.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	pangolin2.base_width_cubits = 3.0
+	pangolin2.base_weight = 1.5
+	pangolin2.placement_faith_cost = 1.2
+	pangolin2.visual_color = Color(0.5, 0.45, 0.4)
+	species_list.append(pangolin2)
+	
+	var tapir2 = AnimalSpeciesClass.new()
+	tapir2.species_name = "Malayan Tapir"
+	tapir2.description = "马来貘，黑白相间。"
+	tapir2.is_clean = false
+	tapir2.base_width_cubits = 6.0
+	tapir2.base_weight = 4.0
+	tapir2.placement_faith_cost = 1.8
+	tapir2.visual_color = Color(0.2, 0.2, 0.25)
+	species_list.append(tapir2)
