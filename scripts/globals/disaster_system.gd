@@ -116,7 +116,7 @@ func _take_hull_damage(amount: float):
 	# 扣除信仰
 	var gm = get_node_or_null("/root/GameManager")
 	if gm:
-		gm.call("modify_faith", -faith_impact)
+		gm.add_faith(faith_impact)
 	
 	print("💔 船体受损 %d, 信仰下降 %.1f" % [amount, faith_impact])
 
