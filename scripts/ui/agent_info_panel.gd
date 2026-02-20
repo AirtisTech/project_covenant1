@@ -87,18 +87,18 @@ func _update_agent_info():
 	if not selected_agent:
 		return
 	
-	# 名称
-	if selected_agent.has("agent_name"):
+	# 名称 - 直接访问属性
+	if "agent_name" in selected_agent:
 		name_label.text = "👤 " + str(selected_agent.agent_name)
 	
-	# 体力
-	if selected_agent.has("stamina"):
+	# 体力 - 直接访问属性
+	if "stamina" in selected_agent:
 		var stamina = selected_agent.stamina
 		var color = "🟢" if stamina > 50 else "🟡" if stamina > 20 else "🔴"
 		stamina_label.text = "%s 体力: %d%%" % [color, int(stamina)]
 	
-	# 当前任务
-	if selected_agent.has("current_task") and selected_agent.current_task:
+	# 当前任务 - 直接访问属性
+	if "current_task" in selected_agent and selected_agent.current_task:
 		var task = selected_agent.current_task
 		var task_name = "工作中"
 		match task.type:
