@@ -299,7 +299,7 @@ func _dead_animal(animal):
 	# 信仰损失
 	var gm = get_node_or_null("/root/GameManager")
 	if gm:
-		gm.call("modify_faith", -FAITH_DRAIN)
+		gm.add_faith(-FAITH_DRAIN)
 	
 	animal_died.emit(animal)
 	print("💀 Animal died! Faith -%d" % FAITH_DRAIN)

@@ -4,6 +4,7 @@ extends Control
 # 显示所有家庭成员的状态
 
 var family_container: VBoxContainer
+var update_timer: float = 0.0
 
 func _ready():
 	visible = false
@@ -35,8 +36,11 @@ func _setup_ui():
 	family_container.size = Vector2(200, 160)
 	panel.add_child(family_container)
 
-func _process(_delta):
-	_update_family_status()
+func _process(delta):
+	update_timer += delta
+	if update_timer >= 1.0:  # 每秒更新一次
+		update_timer = 0.0
+		_update_family_status()
 
 func _update_family_status():
 	if not visible:
@@ -74,7 +78,8 @@ func _get_member_status(member) -> String:
 
 func _on_phase_changed(from, to):
 	# 在大洪水和漂流阶段显示
-	if to == 1 or to == 2:  # DELUGE or DRIFT
+	var pm = get_node_or_null("/root/PhaseManager")
+	if pm and (to == pm.Phase.DELUGE or to == pm.Phase.DRIFT):
 		visible = true
 	else:
 		visible = false

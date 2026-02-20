@@ -505,3 +505,74 @@ func _init_list():
 	leech.placement_faith_cost = 0.2
 	leech.visual_color = Color(0.3, 0.2, 0.25)
 	species_list.append(leech)
+	
+	# ===== 更多独特动物 =====
+	var crane = AnimalSpeciesClass.new()
+	crane.species_name = "Crane"
+	crane.description = "优雅的长腿鸟类。"
+	crane.is_clean = true
+	crane.base_width_cubits = 2.5
+	crane.base_weight = 0.4
+	crane.placement_faith_cost = 0.5
+	crane.visual_color = Color(0.95, 0.9, 0.85)
+	species_list.append(crane)
+	
+	var pelican = AnimalSpeciesClass.new()
+	pelican.species_name = "Pelican"
+	pelican.description = "大型捕鱼鸟类。"
+	pelican.is_clean = true
+	pelican.base_width_cubits = 4.0
+	pelican.base_weight = 1.0
+	pelican.placement_faith_cost = 0.8
+	pelican.visual_color = Color(0.95, 0.95, 0.9)
+	species_list.append(pelican)
+	
+	var stork = AnimalSpeciesClass.new()
+	stork.species_name = "Stork"
+	stork.description = "传说中的送子鸟。"
+	stork.is_clean = true
+	stork.base_width_cubits = 3.5
+	stork.base_weight = 0.7
+	stork.placement_faith_cost = 0.7
+	stork.visual_color = Color(1.0, 1.0, 1.0)
+	species_list.append(stork)
+	
+	var ibis = AnimalSpeciesClass.new()
+	ibis.species_name = "Ibis"
+	ibis.description = "优雅的白色水鸟。"
+	ibis.is_clean = true
+	ibis.base_width_cubits = 2.0
+	ibis.base_weight = 0.4
+	ibis.placement_faith_cost = 0.4
+	ibis.visual_color = Color(0.9, 0.95, 1.0)
+	species_list.append(ibis)
+	
+	var swan = AnimalSpeciesClass.new()
+	swan.species_name = "Swan"
+	swan.description = "美丽的天鹅。"
+	swan.is_clean = true
+	swan.base_width_cubits = 4.0
+	swan.base_weight = 1.2
+	swan.placement_faith_cost = 0.9
+	swan.visual_color = Color(1.0, 1.0, 1.0)
+	species_list.append(swan)
+	
+	var flamingo = AnimalSpeciesClass.new()
+	flamingo.species_name = "Flamingo"
+	flamingo.description = "独特的粉红色鸟类。"
+	flamingo.is_clean = true
+	flamingo.base_width_cubits = 3.0
+	flamingo.base_weight = 0.6
+	flamingo.placement_faith_cost = 0.6
+	flamingo.visual_color = Color(1.0, 0.7, 0.7)
+	species_list.append(flamingo)
+	
+	var heron = AnimalSpeciesClass.new()
+	heron.species_name = "Heron"
+	heron.description = "水边的钓鱼高手。"
+	heron.is_clean = true
+	heron.base_width_cubits = 3.5
+	heron.base_weight = 0.5
+	heron.placement_faith_cost = 0.5
+	heron.visual_color = Color(0.5, 0.55, 0.6)
+	species_list.append(heron)
