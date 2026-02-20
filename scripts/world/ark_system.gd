@@ -160,7 +160,7 @@ func _on_cage_triggered(species, coord: Vector2i):
 	if panel:
 		var screen_pos = visual_node.get_global_transform_with_canvas().origin
 		var top_center = screen_pos + Vector2(visual_node.size.x * 0.5, 0)
-		panel.call("show_at_position", species, top_center, true, coord)
+		panel.show_at_position(species, top_center, true, coord)
 
 func update_placement_preview(world_pos: Vector2, species):
 	var grid_x = round((world_pos.x - ARK_START_X) / CELL_SIZE.x)

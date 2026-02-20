@@ -7,7 +7,7 @@ func _gui_input(event):
 		if ark:
 			# 将 UI 坐标转换为世界坐标
 			var world_pos = get_viewport().get_canvas_transform().affine_inverse() * (event.position + global_position)
-			ark.call("handle_manual_click", world_pos)
+			ark.handle_manual_click(world_pos)
 
 func _can_drop_data(at_position, data):
 	if data is Dictionary and data.get("type") == "animal_species":
@@ -15,7 +15,7 @@ func _can_drop_data(at_position, data):
 		var world_pos = get_viewport().get_canvas_transform().affine_inverse() * at_position
 		var ark = get_tree().root.find_child("ArkSystem", true, false)
 		if ark:
-			ark.call("update_placement_preview", world_pos, species)
+			ark.update_placement_preview(world_pos, species)
 		return true
 	return false
 
@@ -25,4 +25,4 @@ func _drop_data(at_position, data):
 		var world_pos = get_viewport().get_canvas_transform().affine_inverse() * at_position
 		var ark = get_tree().root.find_child("ArkSystem", true, false)
 		if ark:
-			ark.call("try_place_at_world_pos", world_pos, species)
+			ark.try_place_at_world_pos(world_pos, species)

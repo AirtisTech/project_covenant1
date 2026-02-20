@@ -8,7 +8,7 @@ func _can_drop_data(at_position, data):
 			# 转换屏幕坐标到世界坐标
 			var camera = get_viewport().get_camera_2d()
 			var world_pos = camera.get_global_transform().affine_inverse() * at_position
-			ark.call("update_placement_preview", world_pos, species)
+			ark.update_placement_preview(world_pos, species)
 		return true
 	return false
 
@@ -20,7 +20,7 @@ func _drop_data(at_position, data):
 			# 转换屏幕坐标到世界坐标
 			var camera = get_viewport().get_camera_2d()
 			var world_pos = camera.get_global_transform().affine_inverse() * at_position
-			ark.call("try_place_at_world_pos", world_pos, species)
+			ark.try_place_at_world_pos(world_pos, species)
 	
 	# 隐藏预览框
 	_hide_preview()
@@ -38,4 +38,4 @@ func _can_drop_data_fallback(_at_position, _data):
 func _hide_preview():
 	var ark = get_parent()
 	if ark and ark.has_method("hide_preview"):
-		ark.call("hide_preview")
+		ark.hide_preview()

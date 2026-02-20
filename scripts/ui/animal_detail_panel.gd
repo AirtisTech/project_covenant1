@@ -89,7 +89,7 @@ func show_at_position(species, target_top_center: Vector2, is_built: bool = fals
 func _on_remove_pressed():
 	var ark = get_tree().root.find_child("ArkSystem", true, false)
 	if ark:
-		ark.call("remove_animal", current_coord)
+		ark.remove_animal(current_coord)
 		self.visible = false
 
 func _input(event):

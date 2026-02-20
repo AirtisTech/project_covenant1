@@ -26,9 +26,5 @@ func _get_drag_data(_at_position):
 	preview.color = species.visual_color
 	preview.modulate.a = 0.5
 	set_drag_preview(preview)
-	
-	var ark = get_tree().root.find_child("ArkSystem", true, false)
-	if ark:
-		ark.call("remove_animal", coord)
-	
+	# Note: Animal removal happens in detail panel or after successful drop
 	return drag_data

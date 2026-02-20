@@ -82,7 +82,7 @@ func _setup_visuals():
 func _on_input_event(_viewport, event, _idx):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		var sm = get_node_or_null("/root/SelectionManager")
-		if sm: sm.call("select_agent", self)
+		if sm: sm.select_agent(self)
 		get_viewport().set_input_as_handled()
 
 func set_selection(is_selected: bool):

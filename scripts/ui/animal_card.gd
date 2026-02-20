@@ -72,7 +72,7 @@ func _on_card_pressed():
 		# 获取卡片在屏幕上的精确位置
 		var card_rect = get_global_rect()
 		var top_center = Vector2(card_rect.position.x + card_rect.size.x / 2, card_rect.position.y)
-		panel.call("show_at_position", species, top_center)
+		panel.show_at_position(species, top_center)
 
 func _get_drag_data(_at_position):
 	drag_happened = true
