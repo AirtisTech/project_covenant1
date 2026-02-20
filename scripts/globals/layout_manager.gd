@@ -1368,3 +1368,34 @@ func _init_list():
 	shrew.placement_faith_cost = 0.1
 	shrew.visual_color = Color(0.4, 0.35, 0.3)
 	species_list.append(shrew)
+	
+	# ===== 更多独特动物 =====
+	var chinchilla2 = AnimalSpeciesClass.new()
+	chinchilla2.species_name = "Long-Tailed Chinchilla"
+	chinchilla2.description = "长尾栗鼠。"
+	chinchilla2.is_clean = true
+	chinchilla2.base_width_cubits = 1.5
+	chinchilla2.base_weight = 0.3
+	chinchilla2.placement_faith_cost = 0.3
+	chinchilla2.visual_color = Color(0.65, 0.65, 0.7)
+	species_list.append(chinchilla2)
+	
+	var mara = AnimalSpeciesClass.new()
+	mara.species_name = "Patagonian Mara"
+	mara.description = "巴塔哥尼亚豚鼠。"
+	mara.is_clean = true
+	mara.base_width_cubits = 3.0
+	mara.base_weight = 1.5
+	mara.placement_faith_cost = 0.6
+	mara.visual_color = Color(0.55, 0.5, 0.45)
+	species_list.append(mara)
+	
+	var capuchin = AnimalSpeciesClass.new()
+	capuchin.species_name = "Capuchin Monkey"
+	capuchin.description = "卷尾猴，聪明的小猴。"
+	capuchin.is_clean = true
+	capuchin.base_width_cubits = 2.0
+	capuchin.base_weight = 0.5
+	capuchin.placement_faith_cost = 0.5
+	capuchin.visual_color = Color(0.55, 0.45, 0.4)
+	species_list.append(capuchin)
