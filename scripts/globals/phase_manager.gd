@@ -103,6 +103,10 @@ func _change_to_next_phase():
 			current_phase = Phase.DRIFT
 			current_day = 1
 			_start_drift()
+			# 通知 GameManager 漂流阶段开始
+			var gm = get_node_or_null("/root/GameManager")
+			if gm and gm.has_method("start_drift_phase"):
+				gm.start_drift_phase()
 		Phase.DRIFT:
 			# 游戏结束或循环
 			print("🎉 Game Complete!")

@@ -82,7 +82,14 @@ func _process(_delta):
 	if phase_idx != 0:
 		start_button.visible = false
 	
-	# 显示洪水信息
+	# 漂流阶段显示距离
+	if phase_idx == 2:
+		var dist = 0
+		if gm.has("distance_to_land"):
+			dist = gm.distance_to_land
+		day_label.text = "天数: %d | 🛶 距离陆地: %d km" % [gm.get("day"), dist]
+	
+	# 显示洪水/漂流信息
 	_update_flood_display()
 
 func _update_flood_display():

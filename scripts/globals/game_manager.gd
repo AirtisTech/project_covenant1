@@ -129,8 +129,25 @@ func _process_daily_survival():
 	
 	stats_updated.emit()
 	
+	# 漂流阶段处理
+	if current_phase == Phase.DRIFT:
+		_process_drift()
+	
 	# 检查胜利条件
 	_check_victory()
+
+func _check_victory():
+	if game_over or victory:
+		return
+	
+	# 胜利条件1：漂流到陆地
+	if current_phase == Phase.DRIFT and distance_to_land <= 0:
+		_end_game(true, "🎉 找到陆地！方舟之旅成功结束！")
+		return
+	
+	# 胜利条件2：漂流阶段完成（150天）
+	if current_phase == Phase.DRIFT and day >= 150:
+		_end_game(true, "🎉 150天漂流结束，成功生存！")
 
 func _hunger_effect(who: String, severity: float):
 	# 饥饿/缺水导致信心下降
@@ -160,13 +177,70 @@ func _check_game_over():
 		_end_game(false, "信心已耗尽，大家放弃了希望...")
 		return
 
-func _check_victory():
-	if game_over or victory:
+# 漂流阶段
+var drift_direction: float = 0.0  # 漂流方向
+var distance_to_land: int = 1000  # 距离陆地公里数
+var drift_events: Array = []  # 漂流事件
+var is_land_sighted: bool = false  # 是否发现陆地
+
+func start_drift_phase():
+	current_phase = Phase.DRIFT
+	drift_direction = randf_range(-1, 1)
+	distance_to_land = 1000 + randi() % 500
+	is_land_sighted = false
+	print("🛶 进入漂流阶段！距离陆地约 ", distance_to_land, " 公里")
+	survival_event.emit("🛶 漂流开始！寻找陆地...")
+
+func _process_drift():
+	# 漂流阶段特有事件
+	if current_phase != Phase.DRIFT:
 		return
 	
-	# 胜利条件：漂流阶段完成（150天）
-	if current_phase == Phase.DRIFT and day >= 150:
-		_end_game(true, "🎉 找到陆地！方舟之旅成功结束！")
+	# 每天漂流距离
+	var daily_drift = randf_range(5, 15)
+	distance_to_land = max(0, distance_to_land - daily_drift)
+	
+	# 随机事件
+	if randf() < 0.2:  # 20% 概率触发事件
+		_trigger_drift_event()
+	
+	# 发现陆地
+	if distance_to_land <= 50 and not is_land_sighted:
+		is_land_sighted = true
+		survival_event.emit("🗺️ 发现陆地！方向：%s" % _get_direction_text())
+
+func _get_direction_text() -> String:
+	if drift_direction < -0.3:
+		return "西"
+	elif drift_direction > 0.3:
+		return "东"
+	else:
+		return "前方"
+
+func _trigger_drift_event():
+	var events = [
+		{"msg": "🐟 捕获大量鱼群，食物+50", "type": "food"},
+		{"msg": "🌧️ 收集雨水，水+30", "type": "water"},
+		{"msg": "🕊️ 鸽子带来好消息，信心+10", "type": "faith"},
+		{"msg": "🪵 发现漂浮的木材", "type": "wood"},
+		{"msg": "🦈 鲨鱼袭击，损失一些食物", "type": "danger"},
+		{"msg": "🌊 大浪来袭，摇晃剧烈", "type": "storm"},
+		{"msg": "😴 大家在漂流中疲惫不堪", "type": "rest"}
+	]
+	
+	var event = events[randi() % events.size()]
+	drift_events.append(event)
+	survival_event.emit(event["msg"])
+	
+	match event["type"]:
+		"food":
+			veg_rations += 50
+		"water":
+			water += 30
+		"faith":
+			faith = min(100, faith + 10)
+		"danger":
+			veg_rations = max(0, veg_rations - 30)
 
 func _end_game(is_victory: bool, message: String):
 	game_over = true
