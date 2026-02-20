@@ -913,3 +913,47 @@ func _init_list():
 	iguana.placement_faith_cost = 1.0
 	iguana.visual_color = Color(0.4, 0.6, 0.35)
 	species_list.append(iguana)
+	
+	# ===== 更多独特动物 =====
+	var jaguar = AnimalSpeciesClass.new()
+	jaguar.species_name = "Jaguar"
+	jaguar.description = "美洲的顶级捕食者。"
+	jaguar.is_clean = false
+	jaguar.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	jaguar.base_width_cubits = 6.0
+	jaguar.base_weight = 5.0
+	jaguar.placement_faith_cost = 3.0
+	jaguar.visual_color = Color(0.85, 0.65, 0.3)
+	species_list.append(jaguar)
+	
+	var panther = AnimalSpeciesClass.new()
+	panther.species_name = "Panther"
+	panther.description = "黑豹，隐秘的猎食者。"
+	panther.is_clean = false
+	panther.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	panther.base_width_cubits = 5.0
+	panther.base_weight = 4.0
+	panther.placement_faith_cost = 2.5
+	panther.visual_color = Color(0.15, 0.15, 0.2)
+	species_list.append(panther)
+	
+	var okapi = AnimalSpeciesClass.new()
+	okapi.species_name = "Okapi"
+	okapi.description = "森林中的神秘长颈鹿亲戚。"
+	okapi.is_clean = true
+	okapi.base_width_cubits = 4.0
+	okapi.base_weight = 3.0
+	okapi.placement_faith_cost = 1.2
+	okapi.visual_color = Color(0.4, 0.25, 0.2)
+	species_list.append(okapi)
+	
+	var narwhal = AnimalSpeciesClass.new()
+	narwhal.species_name = "Narwhal"
+	narwhal.description = "独角鲸，北极的奇特生物。"
+	narwhal.is_clean = false
+	narwhal.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	narwhal.base_width_cubits = 8.0
+	narwhal.base_weight = 8.0
+	narwhal.placement_faith_cost = 3.5
+	narwhal.visual_color = Color(0.7, 0.75, 0.8)
+	species_list.append(narwhal)

@@ -37,5 +37,5 @@ func _can_drop_data_fallback(_at_position, _data):
 
 func _hide_preview():
 	var ark = get_parent()
-	if ark and ark.has_method("hide_preview"):
+	if ark:
 		ark.hide_preview()
