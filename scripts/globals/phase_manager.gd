@@ -98,6 +98,10 @@ func _change_to_next_phase():
 			current_phase = Phase.DELUGE
 			current_day = 1
 			_start_flood()
+			# 确保家人登船
+			var fm = get_node_or_null("/root/FamilyManager")
+			if fm and fm.has_method("_spawn_family"):
+				fm._spawn_family()
 			entered_ark.emit()  # 家人登船
 		Phase.DELUGE:
 			current_phase = Phase.DRIFT

@@ -36,6 +36,11 @@ func start_deluge_phase():
 	phase_started.emit(current_phase)
 	print("--- 洪水爆发：进入大洪水阶段 ---")
 	
+	# 家人登船
+	var fm = get_node_or_null("/root/FamilyManager")
+	if fm and fm.has_method("_spawn_family"):
+		fm._spawn_family()
+	
 	# 布局锁定，开启生存循环
 	stats_updated.emit()
 
