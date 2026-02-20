@@ -1240,3 +1240,34 @@ func _init_list():
 	bittern.placement_faith_cost = 0.4
 	bittern.visual_color = Color(0.45, 0.4, 0.35)
 	species_list.append(bittern)
+	
+	# ===== 更多独特动物 =====
+	var kingfisher = AnimalSpeciesClass.new()
+	kingfisher.species_name = "Kingfisher"
+	kingfisher.description = "翠鸟，捕鱼高手。"
+	kingfisher.is_clean = true
+	kingfisher.base_width_cubits = 1.5
+	kingfisher.base_weight = 0.2
+	kingfisher.placement_faith_cost = 0.25
+	kingfisher.visual_color = Color(0.2, 0.5, 0.6)
+	species_list.append(kingfisher)
+	
+	var osprey = AnimalSpeciesClass.new()
+	osprey.species_name = "Osprey"
+	osprey.description = "鱼鹰，猛禽。"
+	osprey.is_clean = true
+	osprey.base_width_cubits = 4.0
+	osprey.base_weight = 0.8
+	osprey.placement_faith_cost = 0.7
+	osprey.visual_color = Color(0.4, 0.35, 0.3)
+	species_list.append(osprey)
+	
+	var meerkat = AnimalSpeciesClass.new()
+	meerkat.species_name = "Meerkat"
+	meerkat.description = "猫鼬，哨兵动物。"
+	meerkat.is_clean = true
+	meerkat.base_width_cubits = 2.0
+	meerkat.base_weight = 0.4
+	meerkat.placement_faith_cost = 0.4
+	meerkat.visual_color = Color(0.55, 0.5, 0.4)
+	species_list.append(meerkat)
