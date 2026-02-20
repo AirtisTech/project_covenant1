@@ -341,3 +341,11 @@ func get_hungry_animals() -> Array:
 			if hunger > 50:
 				hungry.append(animal)
 	return hungry
+
+# 获取存活动物数量
+func get_alive_count() -> int:
+	var count = 0
+	for animal in animals:
+		if is_instance_valid(animal):
+			count += 1
+	return count

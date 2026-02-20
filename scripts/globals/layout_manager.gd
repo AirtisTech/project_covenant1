@@ -765,3 +765,56 @@ func _init_list():
 	beaver.placement_faith_cost = 0.8
 	beaver.visual_color = Color(0.45, 0.35, 0.3)
 	species_list.append(beaver)
+	
+	# ===== 更多独特动物 =====
+	var squirrel = AnimalSpeciesClass.new()
+	squirrel.species_name = "Squirrel"
+	squirrel.description = "灵巧的松鼠。"
+	squirrel.is_clean = true
+	squirrel.base_width_cubits = 1.0
+	squirrel.base_weight = 0.15
+	squirrel.placement_faith_cost = 0.15
+	squirrel.visual_color = Color(0.55, 0.4, 0.3)
+	species_list.append(squirrel)
+	
+	var hedgehog = AnimalSpeciesClass.new()
+	hedgehog.species_name = "Hedgehog"
+	hedgehog.description = "可爱的小刺猬。"
+	hedgehog.is_clean = true
+	hedgehog.base_width_cubits = 1.5
+	hedgehog.base_weight = 0.2
+	hedgehog.placement_faith_cost = 0.2
+	hedgehog.visual_color = Color(0.6, 0.55, 0.5)
+	species_list.append(hedgehog)
+	
+	var mole = AnimalSpeciesClass.new()
+	mole.species_name = "Mole"
+	mole.description = "地下的挖掘者。"
+	mole.is_clean = false
+	mole.base_width_cubits = 1.5
+	mole.base_weight = 0.15
+	mole.placement_faith_cost = 0.2
+	mole.visual_color = Color(0.4, 0.35, 0.35)
+	species_list.append(mole)
+	
+	var weasel = AnimalSpeciesClass.new()
+	weasel.species_name = "Weasel"
+	weasel.description = "敏捷的小型捕食者。"
+	weasel.is_clean = false
+	weasel.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	weasel.base_width_cubits = 1.5
+	weasel.base_weight = 0.15
+	weasel.placement_faith_cost = 0.3
+	weasel.visual_color = Color(0.5, 0.4, 0.35)
+	species_list.append(weasel)
+	
+	var ferret = AnimalSpeciesClass.new()
+	ferret.species_name = "Ferret"
+	ferret.description = "驯化的捕猎助手。"
+	ferret.is_clean = false
+	ferret.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	ferret.base_width_cubits = 2.0
+	ferret.base_weight = 0.3
+	ferret.placement_faith_cost = 0.4
+	ferret.visual_color = Color(0.55, 0.45, 0.4)
+	species_list.append(ferret)

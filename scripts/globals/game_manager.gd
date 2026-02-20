@@ -108,6 +108,11 @@ func _process_daily_survival():
 	# 处理农作物生长
 	process_daily_crops()
 	
+	# 更新动物数量统计
+	var survival = get_node_or_null("/root/AnimalSurvival")
+	if survival:
+		animals_alive = survival.get_alive_count()
+	
 	# 家人每天消耗
 	var human_food_need = humans_alive * 10.0  # 每人10单位食物
 	var human_water_need = humans_alive * 15.0  # 每人15单位水
