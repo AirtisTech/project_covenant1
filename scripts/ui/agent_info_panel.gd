@@ -111,7 +111,7 @@ func _update_agent_info():
 		task_label.text = "📌 待机中"
 	
 	# 任务队列
-	if selected_agent.has("task_queue"):
+	if "task_queue" in selected_agent:
 		var queue_size = selected_agent.task_queue.size()
 		if queue_size > 0:
 			task_queue_label.text = "📋 队列: %d 个任务" % queue_size
