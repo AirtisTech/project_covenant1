@@ -50,12 +50,16 @@ func _process(delta):
 func _trigger_random_disaster():
 	var roll = randf()
 	
-	if roll < 0.5:
+	if roll < 0.4:
 		_start_disaster(DisasterType.STORM)
-	elif roll < 0.7:
+	elif roll < 0.55:
 		_start_disaster(DisasterType.HULL_DAMAGE)
-	elif roll < 0.85:
+	elif roll < 0.7:
 		_start_disaster(DisasterType.ANIMAL_ESCAPE)
+	elif roll < 0.8:
+		_start_disaster(DisasterType.FIRE)
+	elif roll < 0.9:
+		_start_disaster(DisasterType.FOOD_ROT)
 	else:
 		# 小灾难不给太多提示
 		print("⚠️ Weather unstable...")
@@ -85,6 +89,14 @@ func _start_disaster(type: DisasterType):
 		DisasterType.ANIMAL_ESCAPE:
 			print("🦌 动物逃跑！")
 			_animal_escape()
+		
+		DisasterType.FIRE:
+			print("🔥 火灾！")
+			_fire_disaster()
+		
+		DisasterType.FOOD_ROT:
+			print("🍞 食物腐烂！")
+			_food_rot_disaster()
 	
 	# 灾难持续时间
 	await get_tree().create_timer(randf_range(10.0, 30.0)).timeout
@@ -130,9 +142,31 @@ func _animal_escape():
 			random_animal.queue_free()
 			print("🦌 一只动物逃跑了！")
 
+func _fire_disaster():
+	# 火灾：损失部分食物
+	var gm = get_node_or_null("/root/GameManager")
+	if gm:
+		var food_loss = randi_range(50, 150)
+		gm.veg_rations = max(0, gm.veg_rations - food_loss)
+		faith_crisis.emit(15.0)
+		gm.add_faith(-15)
+		print("🔥 火灾损失了 %d 素食" % food_loss)
+
+func _food_rot_disaster():
+	# 食物腐烂：随机损失食物
+	var gm = get_node_or_null("/root/GameManager")
+	if gm:
+		var veg_loss = randi_range(30, 100)
+		var meat_loss = randi_range(20, 50)
+		gm.veg_rations = max(0, gm.veg_rations - veg_loss)
+		gm.meat_rations = max(0, gm.meat_rations - meat_loss)
+		print("🍞 食物腐烂：素食-%d 肉食-%d" % [veg_loss, meat_loss])
+
 func get_disaster_name() -> String:
 	match current_disaster:
 		DisasterType.STORM: return "🌧️ 暴风雨"
 		DisasterType.HULL_DAMAGE: return "💥 船体破损"
 		DisasterType.ANIMAL_ESCAPE: return "🦌 动物逃跑"
+		DisasterType.FIRE: return "🔥 火灾"
+		DisasterType.FOOD_ROT: return "🍞 食物腐烂"
 		_: return ""

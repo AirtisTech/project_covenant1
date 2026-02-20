@@ -859,3 +859,57 @@ func _init_list():
 	guinea_pig.placement_faith_cost = 0.25
 	guinea_pig.visual_color = Color(0.7, 0.55, 0.45)
 	species_list.append(guinea_pig)
+	
+	# ===== 更多独特动物 =====
+	var python = AnimalSpeciesClass.new()
+	python.species_name = "Python"
+	python.description = "大型无毒蛇。"
+	python.is_clean = false
+	python.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	python.base_width_cubits = 8.0
+	python.base_weight = 3.0
+	python.placement_faith_cost = 2.5
+	python.visual_color = Color(0.45, 0.5, 0.4)
+	species_list.append(python)
+	
+	var cobra = AnimalSpeciesClass.new()
+	cobra.species_name = "Cobra"
+	cobra.description = "危险的毒蛇。"
+	cobra.is_clean = false
+	cobra.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	cobra.base_width_cubits = 6.0
+	cobra.base_weight = 2.0
+	cobra.placement_faith_cost = 2.0
+	cobra.visual_color = Color(0.4, 0.35, 0.3)
+	species_list.append(cobra)
+	
+	var tortoise = AnimalSpeciesClass.new()
+	tortoise.species_name = "Tortoise"
+	tortoise.description = "长寿的陆龟。"
+	tortoise.is_clean = true
+	tortoise.base_width_cubits = 4.0
+	tortoise.base_weight = 2.0
+	tortoise.placement_faith_cost = 0.8
+	tortoise.visual_color = Color(0.45, 0.45, 0.4)
+	species_list.append(tortoise)
+	
+	var turtle = AnimalSpeciesClass.new()
+	turtle.species_name = "Sea Turtle"
+	turtle.description = "海洋中的古老生物。"
+	turtle.is_clean = true
+	turtle.base_width_cubits = 5.0
+	turtle.base_weight = 2.5
+	turtle.placement_faith_cost = 1.0
+	turtle.visual_color = Color(0.4, 0.55, 0.45)
+	species_list.append(turtle)
+	
+	var iguana = AnimalSpeciesClass.new()
+	iguana.species_name = "Iguana"
+	iguana.description = "大型绿鬣蜥。"
+	iguana.is_clean = false
+	iguana.diet = AnimalSpeciesClass.Diet.HERBIVORE
+	iguana.base_width_cubits = 4.0
+	iguana.base_weight = 1.5
+	iguana.placement_faith_cost = 1.0
+	iguana.visual_color = Color(0.4, 0.6, 0.35)
+	species_list.append(iguana)
