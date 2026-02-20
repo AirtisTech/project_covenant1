@@ -80,7 +80,7 @@ func _play_thunder_sound():
 	print("⚡ 雷声！")
 
 func _on_phase_changed(from, to):
-	if to == PhaseManager.Phase.DELUGE:
+	if to == PhaseManager.Phase.DELUGE or to == PhaseManager.Phase.DRIFT:
 		visible = true
 		print("🌧️ 天气系统启用")
 	else:

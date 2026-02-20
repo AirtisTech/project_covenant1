@@ -139,7 +139,8 @@ func _start_drift():
 	is_storming = false
 
 func _process(delta):
-	if current_phase == Phase.DELUGE:
+	# 洪水和漂流阶段都有天气
+	if current_phase == Phase.DELUGE or current_phase == Phase.DRIFT:
 		# 洪水已直接满，不需要更新水位
 		_update_waves(delta)
 		_update_weather(delta)
