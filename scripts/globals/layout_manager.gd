@@ -1209,3 +1209,34 @@ func _init_list():
 	ibex.placement_faith_cost = 1.0
 	ibex.visual_color = Color(0.5, 0.45, 0.4)
 	species_list.append(ibex)
+	
+	# ===== 更多独特动物 =====
+	var water_vole = AnimalSpeciesClass.new()
+	water_vole.species_name = "Water Vole"
+	water_vole.description = "水田鼠，水边的小动物。"
+	water_vole.is_clean = true
+	water_vole.base_width_cubits = 1.0
+	water_vole.base_weight = 0.1
+	water_vole.placement_faith_cost = 0.1
+	water_vole.visual_color = Color(0.4, 0.35, 0.3)
+	species_list.append(water_vole)
+	
+	var water_rail = AnimalSpeciesClass.new()
+	water_rail.species_name = "Water Rail"
+	water_rail.description = "水鸡，沼泽鸟类。"
+	water_rail.is_clean = true
+	water_rail.base_width_cubits = 2.0
+	water_rail.base_weight = 0.3
+	water_rail.placement_faith_cost = 0.3
+	water_rail.visual_color = Color(0.35, 0.3, 0.25)
+	species_list.append(water_rail)
+	
+	var bittern = AnimalSpeciesClass.new()
+	bittern.species_name = "Bittern"
+	bittern.description = "麻鳽，芦苇丛中的鸟。"
+	bittern.is_clean = true
+	bittern.base_width_cubits = 3.0
+	bittern.base_weight = 0.5
+	bittern.placement_faith_cost = 0.4
+	bittern.visual_color = Color(0.45, 0.4, 0.35)
+	species_list.append(bittern)
