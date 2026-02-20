@@ -722,3 +722,46 @@ func _init_list():
 	reindeer.placement_faith_cost = 1.5
 	reindeer.visual_color = Color(0.45, 0.4, 0.35)
 	species_list.append(reindeer)
+	
+	# ===== 更多独特动物 =====
+	var badger = AnimalSpeciesClass.new()
+	badger.species_name = "Badger"
+	badger.description = "强壮的洞穴动物。"
+	badger.is_clean = false
+	badger.diet = AnimalSpeciesClass.Diet.OMNIVORE
+	badger.base_width_cubits = 2.0
+	badger.base_weight = 1.0
+	badger.placement_faith_cost = 0.6
+	badger.visual_color = Color(0.4, 0.4, 0.4)
+	species_list.append(badger)
+	
+	var raccoon = AnimalSpeciesClass.new()
+	raccoon.species_name = "Raccoon"
+	raccoon.description = "灵活的偷食者。"
+	raccoon.is_clean = false
+	raccoon.diet = AnimalSpeciesClass.Diet.OMNIVORE
+	raccoon.base_width_cubits = 2.0
+	raccoon.base_weight = 0.8
+	raccoon.placement_faith_cost = 0.5
+	raccoon.visual_color = Color(0.45, 0.45, 0.45)
+	species_list.append(raccoon)
+	
+	var otter = AnimalSpeciesClass.new()
+	otter.species_name = "Otter"
+	otter.description = "可爱的水獭。"
+	otter.is_clean = true
+	otter.base_width_cubits = 2.5
+	otter.base_weight = 0.8
+	otter.placement_faith_cost = 0.6
+	otter.visual_color = Color(0.5, 0.4, 0.35)
+	species_list.append(otter)
+	
+	var beaver = AnimalSpeciesClass.new()
+	beaver.species_name = "Beaver"
+	beaver.description = "勤劳的水坝建造者。"
+	beaver.is_clean = true
+	beaver.base_width_cubits = 3.0
+	beaver.base_weight = 1.5
+	beaver.placement_faith_cost = 0.8
+	beaver.visual_color = Color(0.45, 0.35, 0.3)
+	species_list.append(beaver)

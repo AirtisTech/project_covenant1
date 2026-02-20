@@ -29,9 +29,9 @@ func _ready():
 	print("⚠️ DisasterSystem initialized")
 
 func _process(delta):
-	# 只在大洪水阶段发生灾难
+	# 在大洪水和漂流阶段都可能发生灾难
 	var pm = get_node_or_null("/root/PhaseManager")
-	if not pm or pm.current_phase != pm.Phase.DELUGE:
+	if not pm or (pm.current_phase != pm.Phase.DELUGE and pm.current_phase != pm.Phase.DRIFT):
 		return
 	
 	# 如果当前有灾难，不触发新的
