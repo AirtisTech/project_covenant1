@@ -108,8 +108,10 @@ func _on_phase_changed(from, to):
 
 func _on_weather_changed(intensity: float):
 	if rain_particles:
-		rain_particles.emitting = intensity > 0.3
-		rain_particles.amount = int(RAIN_INTENSITY * intensity)
+		# 确保粒子数量至少为1
+		var amount = max(1, int(100 * intensity))
+		rain_particles.amount = amount
+		rain_particles.emitting = intensity > 0.05
 
 func get_weather_description() -> String:
 	var pm = PhaseManager
