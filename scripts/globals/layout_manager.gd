@@ -1334,3 +1334,37 @@ func _init_list():
 	pronghorn.placement_faith_cost = 1.0
 	pronghorn.visual_color = Color(0.6, 0.5, 0.4)
 	species_list.append(pronghorn)
+	
+	# ===== 更多独特动物 =====
+	var muskrats = AnimalSpeciesClass.new()
+	muskrats.species_name = "Muskrat"
+	muskrats.description = "麝鼠，水边啮齿动物。"
+	muskrats.is_clean = false
+	muskrats.diet = AnimalSpeciesClass.Diet.OMNIVORE
+	muskrats.base_width_cubits = 2.0
+	muskrats.base_weight = 0.3
+	muskrats.placement_faith_cost = 0.3
+	muskrats.visual_color = Color(0.4, 0.35, 0.3)
+	species_list.append(muskrats)
+	
+	var mink = AnimalSpeciesClass.new()
+	mink.species_name = "Mink"
+	mink.description = "水貂，毛皮动物。"
+	mink.is_clean = false
+	mink.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	mink.base_width_cubits = 2.0
+	mink.base_weight = 0.3
+	mink.placement_faith_cost = 0.4
+	mink.visual_color = Color(0.3, 0.25, 0.2)
+	species_list.append(mink)
+	
+	var shrew = AnimalSpeciesClass.new()
+	shrew.species_name = "Shrew"
+	shrew.description = "鼩鼱，微小哺乳动物。"
+	shrew.is_clean = false
+	shrew.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	shrew.base_width_cubits = 1.0
+	shrew.base_weight = 0.05
+	shrew.placement_faith_cost = 0.1
+	shrew.visual_color = Color(0.4, 0.35, 0.3)
+	species_list.append(shrew)
