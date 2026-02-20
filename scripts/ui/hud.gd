@@ -113,13 +113,14 @@ func _update_flood_display():
 func _on_start_pressed():
 	var gm = get_node_or_null("/root/GameManager")
 	if gm:
-		gm.call("start_deluge_phase")
+		gm.start_deluge_phase()
 		# 隐藏底部菜单
 		var selector = get_tree().root.find_child("AnimalSelector", true, false)
 		if selector: selector.visible = false
 		
-		if get_node_or_null("/root/HapticManager"):
-			get_node("/root/HapticManager").call("heavy")
+		var haptic = get_node_or_null("/root/HapticManager")
+		if haptic and haptic.has_method("heavy"):
+			haptic.heavy()
 
 func _on_survival_event(message: String):
 	var event_label = find_child("EventLabel", true, false)

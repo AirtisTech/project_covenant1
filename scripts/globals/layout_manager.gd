@@ -671,3 +671,54 @@ func _init_list():
 	tapir.placement_faith_cost = 1.8
 	tapir.visual_color = Color(0.25, 0.25, 0.3)
 	species_list.append(tapir)
+	
+	# ===== 更多独特动物 =====
+	var alpaca = AnimalSpeciesClass.new()
+	alpaca.species_name = "Alpaca"
+	alpaca.description = "温顺的安第斯驼类。"
+	alpaca.is_clean = true
+	alpaca.base_width_cubits = 3.0
+	alpaca.base_weight = 2.0
+	alpaca.placement_faith_cost = 0.8
+	alpaca.visual_color = Color(0.9, 0.85, 0.75)
+	species_list.append(alpaca)
+	
+	var llama = AnimalSpeciesClass.new()
+	llama.species_name = "Llama"
+	llama.description = "美洲的大型驼类动物。"
+	llama.is_clean = true
+	llama.base_width_cubits = 4.5
+	llama.base_weight = 3.5
+	llama.placement_faith_cost = 1.2
+	llama.visual_color = Color(0.8, 0.7, 0.6)
+	species_list.append(llama)
+	
+	var ostrich = AnimalSpeciesClass.new()
+	ostrich.species_name = "Ostrich"
+	ostrich.description = "巨大的奔跑鸟类。"
+	ostrich.is_clean = true
+	ostrich.base_width_cubits = 5.0
+	ostrich.base_weight = 2.5
+	ostrich.placement_faith_cost = 1.0
+	ostrich.visual_color = Color(0.2, 0.2, 0.25)
+	species_list.append(ostrich)
+	
+	var emu = AnimalSpeciesClass.new()
+	emu.species_name = "Emu"
+	emu.description = "澳洲的大型鸟类。"
+	emu.is_clean = true
+	emu.base_width_cubits = 4.5
+	emu.base_weight = 2.0
+	emu.placement_faith_cost = 0.9
+	emu.visual_color = Color(0.4, 0.4, 0.45)
+	species_list.append(emu)
+	
+	var reindeer = AnimalSpeciesClass.new()
+	reindeer.species_name = "Reindeer"
+	reindeer.description = "北极地区的驯鹿。"
+	reindeer.is_clean = true
+	reindeer.base_width_cubits = 6.0
+	reindeer.base_weight = 4.0
+	reindeer.placement_faith_cost = 1.5
+	reindeer.visual_color = Color(0.45, 0.4, 0.35)
+	species_list.append(reindeer)

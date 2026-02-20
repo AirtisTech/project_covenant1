@@ -268,7 +268,7 @@ func _create_feeding_task(animal):
 		food_type = "any"
 	
 	var task_pos = animal.global_position
-	tm.call("add_task", TaskDataClass.Type.FEED, task_pos, food_type, animal)
+	tm.add_task(TaskDataClass.Type.FEED, task_pos, food_type, 1, animal)
 	print("📝 创建喂食任务: ", species.species_name, " (需要", food_type, ")")
 
 func _create_feeding_tasks():
@@ -292,7 +292,7 @@ func _create_feeding_tasks():
 				
 				# 使用动物的世界位置作为任务位置
 				var task_pos = animal.global_position
-				tm.call("add_task", TaskDataClass.Type.FEED, task_pos, 2, animal)
+				tm.add_task(TaskDataClass.Type.FEED, task_pos, food_type, 1, animal)
 				print("📝 Created FEED task for ", species.species_name)
 
 func _dead_animal(animal):

@@ -158,7 +158,7 @@ func _seek_task():
 	var tm = get_node_or_null("/root/TaskManager")
 	if tm:
 		# 先尝试获取系统任务
-		current_task = tm.call("request_task", self, []) 
+		current_task = tm.request_task(self, []) 
 		if current_task:
 			var gm = get_node_or_null("/root/GameManager")
 			if gm and gm.get("ark_system"):
@@ -265,7 +265,7 @@ func _do_repair():
 func _complete_task():
 	var tm = get_node_or_null("/root/TaskManager")
 	if tm and current_task:
-		tm.call("complete_task", current_task)
+		tm.complete_task(current_task)
 	current_task = null
 	
 	# 检查任务队列

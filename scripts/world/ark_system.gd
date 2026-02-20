@@ -237,7 +237,7 @@ func _do_place(coord: Vector2i, species):
 		survival.register_animal(v)
 	
 	var lm = get_node_or_null("/root/LayoutManager")
-	if lm: lm.call("set_species_placed", species, true)
+	if lm: lm.set_species_placed(species, true)
 
 func remove_animal(coord: Vector2i):
 	if not placed_animals.has(coord): return
