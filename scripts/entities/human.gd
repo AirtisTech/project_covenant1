@@ -336,9 +336,12 @@ func move_to(pos: Vector2):
 		# 如果需要换层，计算经过楼梯的路径
 		if current_deck != target_deck and current_deck != -1 and target_deck != -1:
 			_calculate_path_with_stairs(pos, current_deck, target_deck, ark)
-		else:
-			# 同一层，直接移动
-			pass
+		elif target_deck == -1:
+			# 检查目标位置是否在甲板上，不在的话就近找甲板位置
+			target_deck = 1  # 默认中层
+			var new_pos = ark.get_deck_target_y(target_deck)
+			target_position = Vector2(pos.x, new_pos)
+			print("🏗️ 目标不在甲板上，调整到 ", target_position)
 	
 	print("🏃 ", agent_name, " 前往 ", pos)
 
@@ -349,13 +352,30 @@ func get_ark_system():
 	return null
 
 func _calculate_path_with_stairs(target_pos: Vector2, from_deck: int, to_deck: int, ark):
-	# 计算经过楼梯的路径
-	var stairs_pos = ark.get_stairs_in_range(from_deck, to_deck)
+	# 找到最近的楼梯
+	var nearest_stairs = _find_nearest_stairs(from_deck, to_deck, ark)
 	
-	if stairs_pos.x > 0:
-		# 路径：当前位置 -> 楼梯 -> 目标位置
-		var deck_y = ark.get_deck_target_y(to_deck)
-		target_position = Vector2(stairs_pos.x, deck_y)
+	if nearest_stairs.x > 0:
+		# 第一步：走到楼梯
+		var deck_y = ark.get_deck_target_y(from_deck)
+		target_position = Vector2(nearest_stairs.x, deck_y)
 		
 		# 标记即将使用楼梯
-		print("🪜 ", agent_name, " 需要使用楼梯从 ", from_deck, " 层到 ", to_deck, " 层")
+		print("🪜 ", agent_name, " 使用楼梯从 ", from_deck, " 层到 ", to_deck, " 层")
+
+func _find_nearest_stairs(from_deck: int, to_deck: int, ark) -> Vector2:
+	# 找到最近的楼梯
+	var current_pos = global_position
+	var nearest = Vector2(-1, -1)
+	var min_dist = 999999.0
+	
+	for stairs in ark.STAIRS_POSITIONS:
+		if (stairs["from_deck"] == from_deck and stairs["to_deck"] == to_deck) or \
+		   (stairs["from_deck"] == to_deck and stairs["to_deck"] == from_deck):
+			var stairs_x = stairs["x"]
+			var dist = abs(current_pos.x - stairs_x)
+			if dist < min_dist:
+				min_dist = dist
+				nearest = Vector2(stairs_x, stairs["y_bottom"])
+	
+	return nearest

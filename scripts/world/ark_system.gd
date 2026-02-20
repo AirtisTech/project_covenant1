@@ -17,8 +17,12 @@ const DECK_INFO = {
 
 # 楼梯位置（每层之间的连接点）
 const STAIRS_POSITIONS = [
-	{"from_deck": 0, "to_deck": 1, "x": 100, "y_bottom": 360, "y_top": 320},  # 底层<->中层
-	{"from_deck": 1, "to_deck": 2, "x": 100, "y_bottom": 320, "y_top": 280}   # 中层<->上层
+	{"from_deck": 0, "to_deck": 1, "x": 100, "y_bottom": 360, "y_top": 320},  # 底层<->中层 (前部)
+	{"from_deck": 1, "to_deck": 2, "x": 100, "y_bottom": 320, "y_top": 280},  # 中层<->上层 (前部)
+	{"from_deck": 0, "to_deck": 1, "x": 400, "y_bottom": 360, "y_top": 320},  # 底层<->中层 (中部)
+	{"from_deck": 1, "to_deck": 2, "x": 400, "y_bottom": 320, "y_top": 280},  # 中层<->上层 (中部)
+	{"from_deck": 0, "to_deck": 1, "x": 700, "y_bottom": 360, "y_top": 320},  # 底层<->中层 (后部)
+	{"from_deck": 1, "to_deck": 2, "x": 700, "y_bottom": 320, "y_top": 280},  # 中层<->上层 (后部)
 ]
 
 var placed_animals: Dictionary = {} 
