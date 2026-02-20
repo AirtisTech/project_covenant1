@@ -230,7 +230,19 @@ func _trigger_drift_event():
 		{"msg": "🪵 发现漂浮的木材", "type": "wood"},
 		{"msg": "🦈 鲨鱼袭击，损失一些食物", "type": "danger"},
 		{"msg": "🌊 大浪来袭，摇晃剧烈", "type": "storm"},
-		{"msg": "😴 大家在漂流中疲惫不堪", "type": "rest"}
+		{"msg": "😴 大家在漂流中疲惫不堪", "type": "rest"},
+		{"msg": "🌈 彩虹出现！大家重拾希望，信心+15", "type": "faith"},
+		{"msg": "🐋 遇到温和的鲸鱼，大家很兴奋", "type": "faith"},
+		{"msg": "🌙 流星划过夜空", "type": "faith"},
+		{"msg": "🦅 老鹰指引方向，信心+5", "type": "faith"},
+		{"msg": "💨 顺风！漂流速度加快", "type": "speed"},
+		{"msg": "🌊 逆风，漂流受阻", "type": "slow"},
+		{"msg": "☀️ 晴朗的一天，大家心情愉快", "type": "faith"},
+		{"msg": "📦 发现一个漂浮的箱子，物资+20", "type": "food"},
+		{"msg": "🧜 传说中海妖的歌声让大家不安", "type": "danger"},
+		{"msg": "🦑 大乌贼出现，损坏部分设施", "type": "danger"},
+		{"msg": "🍀 奇迹般地找到一些野果，食物+15", "type": "food"},
+		{"msg": "🌫️ 大雾弥漫，迷失方向", "type": "slow"}
 	]
 	
 	var event = events[randi() % events.size()]
@@ -239,13 +251,23 @@ func _trigger_drift_event():
 	
 	match event["type"]:
 		"food":
-			veg_rations += 50
+			veg_rations += randi_range(15, 50)
 		"water":
-			water += 30
+			water += randi_range(20, 40)
 		"faith":
-			faith = min(100, faith + 10)
+			faith = min(100, faith + randi_range(5, 15))
 		"danger":
-			veg_rations = max(0, veg_rations - 30)
+			veg_rations = max(0, veg_rations - randi_range(10, 30))
+			water = max(0, water - randi_range(5, 15))
+		"speed":
+			# 漂流更快
+			distance_to_land = max(0, distance_to_land - randi_range(20, 40))
+		"slow":
+			# 漂流变慢
+			distance_to_land += randi_range(10, 20)
+		"wood":
+			# 木材可以用于修复或建造
+			pass
 
 func _end_game(is_victory: bool, message: String):
 	game_over = true

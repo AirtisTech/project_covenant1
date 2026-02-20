@@ -401,3 +401,107 @@ func _init_list():
 	rat.placement_faith_cost = 0.3
 	rat.visual_color = Color(0.5, 0.45, 0.4)
 	species_list.append(rat)
+	
+	# ===== 更多独特动物 =====
+	var giraffe = AnimalSpeciesClass.new()
+	giraffe.species_name = "Giraffe"
+	giraffe.description = "高耸的长颈鹿。需要高耸的空间。"
+	giraffe.is_clean = true
+	giraffe.base_width_cubits = 3.0
+	giraffe.base_weight = 5.0
+	giraffe.placement_faith_cost = 2.0
+	giraffe.visual_color = Color(0.85, 0.65, 0.3)
+	species_list.append(giraffe)
+	
+	var zebra = AnimalSpeciesClass.new()
+	zebra.species_name = "Zebra"
+	zebra.description = "斑纹美丽的非洲马。"
+	zebra.is_clean = true
+	zebra.base_width_cubits = 3.5
+	zebra.base_weight = 3.5
+	zebra.placement_faith_cost = 1.2
+	zebra.visual_color = Color(0.95, 0.95, 0.95)
+	species_list.append(zebra)
+	
+	var hippo = AnimalSpeciesClass.new()
+	hippo.species_name = "Hippo"
+	hippo.description = "河马。需要大量水源。"
+	hippo.is_clean = false
+	hippo.diet = AnimalSpeciesClass.Diet.HERBIVORE
+	hippo.base_width_cubits = 10.0
+	hippo.base_weight = 12.0
+	hippo.placement_faith_cost = 4.5
+	hippo.visual_color = Color(0.5, 0.4, 0.55)
+	species_list.append(hippo)
+	
+	var rhino = AnimalSpeciesClass.new()
+	rhino.species_name = "Rhino"
+	rhino.description = "犀牛。体型巨大，力大无穷。"
+	rhino.is_clean = false
+	rhino.base_width_cubits = 9.0
+	rhino.base_weight = 10.0
+	rhino.placement_faith_cost = 4.0
+	rhino.visual_color = Color(0.45, 0.45, 0.48)
+	species_list.append(rhino)
+	
+	var peacock = AnimalSpeciesClass.new()
+	peacock.species_name = "Peacock"
+	peacock.description = "华丽的大型鸟类。"
+	peacock.is_clean = true
+	peacock.base_width_cubits = 3.0
+	peacock.base_weight = 0.5
+	peacock.placement_faith_cost = 0.6
+	peacock.visual_color = Color(0.2, 0.4, 0.6)
+	species_list.append(peacock)
+	
+	var parrot = AnimalSpeciesClass.new()
+	parrot.species_name = "Parrot"
+	parrot.description = "色彩鲜艳的鸟类，能学人说话。"
+	parrot.is_clean = true
+	parrot.base_width_cubits = 1.5
+	parrot.base_weight = 0.3
+	parrot.placement_faith_cost = 0.4
+	parrot.visual_color = Color(0.9, 0.2, 0.2)
+	species_list.append(parrot)
+	
+	var owl = AnimalSpeciesClass.new()
+	owl.species_name = "Owl"
+	owl.description = "夜间活动的猛禽。"
+	owl.is_clean = true
+	owl.base_width_cubits = 2.0
+	owl.base_weight = 0.4
+	owl.placement_faith_cost = 0.5
+	owl.visual_color = Color(0.6, 0.55, 0.5)
+	species_list.append(owl)
+	
+	var bat = AnimalSpeciesClass.new()
+	bat.species_name = "Bat"
+	bat.description = "夜间飞行的小型哺乳动物。"
+	bat.is_clean = false
+	bat.base_width_cubits = 1.5
+	bat.base_weight = 0.1
+	bat.placement_faith_cost = 0.3
+	bat.visual_color = Color(0.2, 0.15, 0.15)
+	species_list.append(bat)
+	
+	var fox = AnimalSpeciesClass.new()
+	fox.species_name = "Fox"
+	fox.description = "狡猾的猎食者。"
+	fox.is_clean = false
+	fox.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	fox.base_width_cubits = 2.5
+	fox.base_weight = 1.5
+	fox.placement_faith_cost = 1.5
+	fox.visual_color = Color(0.9, 0.5, 0.2)
+	species_list.append(fox)
+	
+	var leech = AnimalSpeciesClass.new()
+	leech.species_name = "Leech"
+	leech.description = "吸血的环节动物。"
+	leech.is_clean = false
+	leech.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	leech.base_width_cubits = 0.5
+	leech.base_weight = 0.02
+	leech.placement_faith_cost = 0.2
+	leech.visual_color = Color(0.3, 0.2, 0.25)
+	species_list.append(leech)
