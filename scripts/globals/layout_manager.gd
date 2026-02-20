@@ -1158,3 +1158,54 @@ func _init_list():
 	tapir2.placement_faith_cost = 1.8
 	tapir2.visual_color = Color(0.2, 0.2, 0.25)
 	species_list.append(tapir2)
+	
+	# ===== 额外独特动物 =====
+	var kudu = AnimalSpeciesClass.new()
+	kudu.species_name = "Kudu"
+	kudu.description = "非洲大角羚。"
+	kudu.is_clean = true
+	kudu.base_width_cubits = 5.0
+	kudu.base_weight = 3.0
+	kudu.placement_faith_cost = 1.2
+	kudu.visual_color = Color(0.5, 0.4, 0.35)
+	species_list.append(kudu)
+	
+	var wildebeest = AnimalSpeciesClass.new()
+	wildebeest.species_name = "Wildebeest"
+	wildebeest.description = "牛羚，迁徙大军。"
+	wildebeest.is_clean = true
+	wildebeest.base_width_cubits = 6.0
+	wildebeest.base_weight = 4.0
+	wildebeest.placement_faith_cost = 1.5
+	wildebeest.visual_color = Color(0.35, 0.3, 0.25)
+	species_list.append(wildebeest)
+	
+	var gazelle = AnimalSpeciesClass.new()
+	gazelle.species_name = "Gazelle"
+	gazelle.description = "优雅的非洲羚羊。"
+	gazelle.is_clean = true
+	gazelle.base_width_cubits = 3.0
+	gazelle.base_weight = 1.5
+	gazelle.placement_faith_cost = 0.8
+	gazelle.visual_color = Color(0.65, 0.55, 0.45)
+	species_list.append(gazelle)
+	
+	var oryx = AnimalSpeciesClass.new()
+	oryx.species_name = "Oryx"
+	oryx.description = "直角大羚羊。"
+	oryx.is_clean = true
+	oryx.base_width_cubits = 7.0
+	oryx.base_weight = 5.0
+	oryx.placement_faith_cost = 1.8
+	oryx.visual_color = Color(0.6, 0.55, 0.5)
+	species_list.append(oryx)
+	
+	var ibex = AnimalSpeciesClass.new()
+	ibex.species_name = "Ibex"
+	ibex.description = "高山山羊。"
+	ibex.is_clean = true
+	ibex.base_width_cubits = 4.0
+	ibex.base_weight = 2.5
+	ibex.placement_faith_cost = 1.0
+	ibex.visual_color = Color(0.5, 0.45, 0.4)
+	species_list.append(ibex)
