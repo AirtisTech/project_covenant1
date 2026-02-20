@@ -20,18 +20,23 @@ func _ready():
 
 func _setup_rain():
 	rain_particles = CPUParticles2D.new()
-	rain_particles.emitting = false
-	rain_particles.amount = RAIN_INTENSITY
-	rain_particles.lifetime = 1.5
-	rain_particles.direction = Vector2(0.3, 1)  # 稍微倾斜
-	rain_particles.spread = 10.0
-	rain_particles.gravity = Vector2(0, 980)
-	rain_particles.initial_velocity_min = 400.0
-	rain_particles.initial_velocity_max = 600.0
+	rain_particles.emitting = true  # 默认启用
+	rain_particles.amount = 200  # 增加雨滴数量
+	rain_particles.lifetime = 1.0
+	rain_particles.direction = Vector2(0.2, 1)  # 稍微倾斜
+	rain_particles.spread = 5.0
+	rain_particles.gravity = Vector2(0, 1500)  # 下落更快
+	rain_particles.initial_velocity_min = 800.0
+	rain_particles.initial_velocity_max = 1200.0
 	rain_particles.scale_amount_min = 1.0
-	rain_particles.scale_amount_max = 2.0
-	rain_particles.color = Color(0.6, 0.7, 0.8, 0.6)
-	rain_particles.position = Vector2(640, -100)
+	rain_particles.scale_amount_max = 3.0
+	rain_particles.color = Color(0.7, 0.8, 0.9, 0.5)
+	# 使用发射区域覆盖整个屏幕
+	rain_particles.position = Vector2(640, 360)
+	rain_particles.amount = 500
+	# 设置发射形状为矩形区域
+	rain_particles.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	rain_particles.emission_rect_extents = Vector2(800, 50)
 	add_child(rain_particles)
 
 func _setup_darkness():
@@ -46,9 +51,20 @@ func _process(delta):
 	
 	var pm = PhaseManager
 	
-	# 更新雨滴位置（跟随相机）
+	# 始终显示雨滴效果
 	if rain_particles:
-		rain_particles.position = get_viewport().get_camera_2d().global_position + Vector2(640, -100)
+		# 跟随相机
+		var camera = get_viewport().get_camera_2d()
+		if camera:
+			rain_particles.position = camera.global_position + Vector2(640, 360)
+		
+		# 根据暴风雨强度调整
+		if pm.is_storming:
+			rain_particles.emitting = true
+			rain_particles.amount = int(300 * pm.weather_intensity)
+		else:
+			rain_particles.emitting = true
+			rain_particles.amount = 100
 	
 	# 闪电效果
 	if pm.is_storming and randf() < 0.002:  # 小概率闪电
@@ -56,7 +72,9 @@ func _process(delta):
 	
 	# 更新黑暗程度
 	if storm_darkness:
-		var target_alpha = pm.weather_intensity * 0.5  # 最大 50% 黑暗
+		var target_alpha = 0.0
+		if pm.is_storming:
+			target_alpha = pm.weather_intensity * 0.4
 		storm_darkness.color.a = lerp(storm_darkness.color.a, target_alpha, delta * 2)
 
 func _trigger_lightning():
