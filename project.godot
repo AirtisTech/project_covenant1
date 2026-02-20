@@ -32,6 +32,7 @@ SelectionManager="*res://scripts/globals/selection_manager.gd"
 LayoutManager="*res://scripts/globals/layout_manager.gd"
 HapticManager="*res://scripts/globals/haptic_manager.gd"
 WeatherEffects="*res://scripts/world/weather_effects.gd"
+AudioManager="*res://scripts/globals/audio_manager.gd"
 
 [display]
 
