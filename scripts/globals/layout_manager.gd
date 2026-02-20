@@ -988,3 +988,67 @@ func _init_list():
 	capybara.placement_faith_cost = 1.0
 	capybara.visual_color = Color(0.55, 0.45, 0.4)
 	species_list.append(capybara)
+	
+	# ===== 更多独特动物 =====
+	var koala = AnimalSpeciesClass.new()
+	koala.species_name = "Koala"
+	koala.description = "嗜睡的树栖哺乳动物。"
+	koala.is_clean = true
+	koala.base_width_cubits = 2.0
+	koala.base_weight = 1.0
+	koala.placement_faith_cost = 0.6
+	koala.visual_color = Color(0.55, 0.55, 0.6)
+	species_list.append(koala)
+	
+	var platypus = AnimalSpeciesClass.new()
+	platypus.species_name = "Platypus"
+	platypus.description = "奇特的卵生哺乳动物。"
+	platypus.is_clean = true
+	platypus.base_width_cubits = 2.5
+	platypus.base_weight = 0.5
+	platypus.placement_faith_cost = 0.8
+	platypus.visual_color = Color(0.5, 0.4, 0.35)
+	species_list.append(platypus)
+	
+	var armadillo = AnimalSpeciesClass.new()
+	armadillo.species_name = "Armadillo"
+	armadillo.description = "身披盔甲的哺乳动物。"
+	armadillo.is_clean = false
+	armadillo.diet = AnimalSpeciesClass.Diet.OMNIVORE
+	armadillo.base_width_cubits = 3.0
+	armadillo.base_weight = 1.5
+	armadillo.placement_faith_cost = 0.8
+	armadillo.visual_color = Color(0.5, 0.45, 0.4)
+	species_list.append(armadillo)
+	
+	var sloth = AnimalSpeciesClass.new()
+	sloth.species_name = "Sloth"
+	sloth.description = "以慢动作闻名的树栖动物。"
+	sloth.is_clean = true
+	sloth.base_width_cubits = 3.0
+	sloth.base_weight = 1.5
+	sloth.placement_faith_cost = 0.7
+	sloth.visual_color = Color(0.55, 0.5, 0.45)
+	species_list.append(sloth)
+	
+	var anteater2 = AnimalSpeciesClass.new()
+	anteater2.species_name = "Aardvark"
+	anteater2.description = "以蚂蚁为食的非洲动物。"
+	anteater2.is_clean = false
+	anteater2.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	anteater2.base_width_cubits = 4.0
+	anteater2.base_weight = 2.0
+	anteater2.placement_faith_cost = 1.2
+	anteater2.visual_color = Color(0.55, 0.45, 0.4)
+	species_list.append(anteater2)
+	
+	var komodo = AnimalSpeciesClass.new()
+	komodo.species_name = "Komodo Dragon"
+	komodo.description = "大型有毒蜥蜴。"
+	komodo.is_clean = false
+	komodo.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	komodo.base_width_cubits = 8.0
+	komodo.base_weight = 4.0
+	komodo.placement_faith_cost = 3.0
+	komodo.visual_color = Color(0.35, 0.4, 0.35)
+	species_list.append(komodo)
