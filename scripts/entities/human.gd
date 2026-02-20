@@ -202,13 +202,32 @@ func _auto_find_work():
 	print("🤖 ", agent_name, " 自动开始工作")
 
 func _move_to_target(delta):
+	# 计算移动方向
 	var direction = (target_position - global_position).normalized()
 	velocity = direction * move_speed
 	move_and_slide()
 	
+	# 限制在方舟范围内
+	_clamp_to_ark_bounds()
+	
 	if global_position.distance_to(target_position) < 10.0:
 		velocity = Vector2.ZERO
 		current_state = State.WORKING
+
+func _clamp_to_ark_bounds():
+	# 方舟边界限制
+	var ark = get_ark_system()
+	if ark:
+		# X 范围: 40 到 1240 (方舟宽度)
+		var min_x = ark.ARK_START_X + 20
+		var max_x = ark.ARK_START_X + 1180
+		
+		# Y 范围: 甲板层之间 (300-400)
+		var min_y = 280.0
+		var max_y = 420.0
+		
+		global_position.x = clamp(global_position.x, min_x, max_x)
+		global_position.y = clamp(global_position.y, min_y, max_y)
 
 func _do_work(_delta):
 	if current_task:
