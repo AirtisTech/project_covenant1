@@ -1271,3 +1271,35 @@ func _init_list():
 	meerkat.placement_faith_cost = 0.4
 	meerkat.visual_color = Color(0.55, 0.5, 0.4)
 	species_list.append(meerkat)
+	
+	# ===== 更多独特动物 =====
+	var mandrill = AnimalSpeciesClass.new()
+	mandrill.species_name = "Mandrill"
+	mandrill.description = "山魈，色彩鲜艳的猴。"
+	mandrill.is_clean = false
+	mandrill.diet = AnimalSpeciesClass.Diet.OMNIVORE
+	mandrill.base_width_cubits = 3.0
+	mandrill.base_weight = 1.5
+	mandrill.placement_faith_cost = 1.0
+	mandrill.visual_color = Color(0.45, 0.5, 0.45)
+	species_list.append(mandrill)
+	
+	var yak2 = AnimalSpeciesClass.new()
+	yak2.species_name = "Wild Yak"
+	yak2.description = "野牦牛，高原巨兽。"
+	yak2.is_clean = true
+	yak2.base_width_cubits = 8.0
+	yak2.base_weight = 6.0
+	yak2.placement_faith_cost = 2.0
+	yak2.visual_color = Color(0.3, 0.25, 0.2)
+	species_list.append(yak2)
+	
+	var bighorn = AnimalSpeciesClass.new()
+	bighorn.species_name = "Bighorn Sheep"
+	bighorn.description = "大角羊，山区攀岩高手。"
+	bighorn.is_clean = true
+	bighorn.base_width_cubits = 4.0
+	bighorn.base_weight = 3.0
+	bighorn.placement_faith_cost = 1.0
+	bighorn.visual_color = Color(0.5, 0.45, 0.4)
+	species_list.append(bighorn)
