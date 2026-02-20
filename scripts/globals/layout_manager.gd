@@ -1303,3 +1303,34 @@ func _init_list():
 	bighorn.placement_faith_cost = 1.0
 	bighorn.visual_color = Color(0.5, 0.45, 0.4)
 	species_list.append(bighorn)
+	
+	# ===== 更多独特动物 =====
+	var caribou = AnimalSpeciesClass.new()
+	caribou.species_name = "Caribou"
+	caribou.description = "驯鹿，圣诞的使者。"
+	caribou.is_clean = true
+	caribou.base_width_cubits = 6.0
+	caribou.base_weight = 4.0
+	caribou.placement_faith_cost = 1.5
+	caribou.visual_color = Color(0.45, 0.4, 0.35)
+	species_list.append(caribou)
+	
+	var elk = AnimalSpeciesClass.new()
+	elk.species_name = "Elk"
+	elk.description = "麋鹿，北美大型鹿。"
+	elk.is_clean = true
+	elk.base_width_cubits = 7.0
+	elk.base_weight = 5.0
+	elk.placement_faith_cost = 1.8
+	elk.visual_color = Color(0.5, 0.4, 0.35)
+	species_list.append(elk)
+	
+	var pronghorn = AnimalSpeciesClass.new()
+	pronghorn.species_name = "Pronghorn"
+	pronghorn.description = "叉角羚，北美最快动物。"
+	pronghorn.is_clean = true
+	pronghorn.base_width_cubits = 4.0
+	pronghorn.base_weight = 2.5
+	pronghorn.placement_faith_cost = 1.0
+	pronghorn.visual_color = Color(0.6, 0.5, 0.4)
+	species_list.append(pronghorn)
