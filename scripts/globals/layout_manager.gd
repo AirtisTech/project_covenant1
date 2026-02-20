@@ -957,3 +957,34 @@ func _init_list():
 	narwhal.placement_faith_cost = 3.5
 	narwhal.visual_color = Color(0.7, 0.75, 0.8)
 	species_list.append(narwhal)
+	
+	# ===== 更多独特动物 =====
+	var manatee = AnimalSpeciesClass.new()
+	manatee.species_name = "Manatee"
+	manatee.description = "温顺的海洋哺乳动物。"
+	manatee.is_clean = true
+	manatee.base_width_cubits = 8.0
+	manatee.base_weight = 5.0
+	manatee.placement_faith_cost = 2.0
+	manatee.visual_color = Color(0.5, 0.55, 0.6)
+	species_list.append(manatee)
+	
+	var dugong = AnimalSpeciesClass.new()
+	dugong.species_name = "Dugong"
+	dugong.description = "海牛近亲，海洋草食动物。"
+	dugong.is_clean = true
+	dugong.base_width_cubits = 7.0
+	dugong.base_weight = 4.0
+	dugong.placement_faith_cost = 1.8
+	dugong.visual_color = Color(0.55, 0.6, 0.65)
+	species_list.append(dugong)
+	
+	var capybara = AnimalSpeciesClass.new()
+	capybara.species_name = "Capybara"
+	capybara.description = "世界上最大的啮齿动物。"
+	capybara.is_clean = true
+	capybara.base_width_cubits = 4.0
+	capybara.base_weight = 3.0
+	capybara.placement_faith_cost = 1.0
+	capybara.visual_color = Color(0.55, 0.45, 0.4)
+	species_list.append(capybara)

@@ -30,7 +30,7 @@ func _ready():
 	
 	# 连接生存事件信号
 	var gm = get_node_or_null("/root/GameManager")
-	if gm and gm.has_signal("survival_event"):
+	if gm:
 		gm.survival_event.connect(_on_survival_event)
 	
 	# 创建角色信息面板
