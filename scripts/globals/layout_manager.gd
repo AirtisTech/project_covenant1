@@ -576,3 +576,98 @@ func _init_list():
 	heron.placement_faith_cost = 0.5
 	heron.visual_color = Color(0.5, 0.55, 0.6)
 	species_list.append(heron)
+	
+	# ===== 更多独特动物 =====
+	var yak = AnimalSpeciesClass.new()
+	yak.species_name = "Yak"
+	yak.description = "高原的负重能手。"
+	yak.is_clean = true
+	yak.base_width_cubits = 6.0
+	yak.base_weight = 5.0
+	yak.placement_faith_cost = 1.8
+	yak.visual_color = Color(0.3, 0.25, 0.2)
+	species_list.append(yak)
+	
+	var buffalo = AnimalSpeciesClass.new()
+	buffalo.species_name = "Water Buffalo"
+	buffalo.description = "善于游泳的水牛。"
+	buffalo.is_clean = true
+	buffalo.base_width_cubits = 7.0
+	buffalo.base_weight = 6.0
+	buffalo.placement_faith_cost = 2.0
+	buffalo.visual_color = Color(0.35, 0.35, 0.4)
+	species_list.append(buffalo)
+	
+	var moose = AnimalSpeciesClass.new()
+	moose.species_name = "Moose"
+	moose.description = "巨大的北方鹿科动物。"
+	moose.is_clean = true
+	moose.base_width_cubits = 8.0
+	moose.base_weight = 7.0
+	moose.placement_faith_cost = 2.5
+	moose.visual_color = Color(0.4, 0.3, 0.25)
+	species_list.append(moose)
+	
+	var bison = AnimalSpeciesClass.new()
+	bison.species_name = "Bison"
+	bison.description = "北美大平原的野牛。"
+	bison.is_clean = true
+	bison.base_width_cubits = 8.0
+	bison.base_weight = 8.0
+	bison.placement_faith_cost = 2.5
+	bison.visual_color = Color(0.45, 0.4, 0.35)
+	species_list.append(bison)
+	
+	var walrus = AnimalSpeciesClass.new()
+	walrus.species_name = "Walrus"
+	walrus.description = "北极的大型海洋哺乳动物。"
+	walrus.is_clean = false
+	walrus.diet = AnimalSpeciesClass.Diet.OMNIVORE
+	walrus.base_width_cubits = 10.0
+	walrus.base_weight = 12.0
+	walrus.placement_faith_cost = 4.0
+	walrus.visual_color = Color(0.55, 0.45, 0.4)
+	species_list.append(walrus)
+	
+	var seal = AnimalSpeciesClass.new()
+	seal.species_name = "Seal"
+	seal.description = "可爱的大型海豹。"
+	seal.is_clean = false
+	seal.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	seal.base_width_cubits = 5.0
+	seal.base_weight = 4.0
+	seal.placement_faith_cost = 2.0
+	seal.visual_color = Color(0.5, 0.5, 0.55)
+	species_list.append(seal)
+	
+	var pangolin = AnimalSpeciesClass.new()
+	pangolin.species_name = "Pangolin"
+	pangolin.description = "独特的鳞甲哺乳动物。"
+	pangolin.is_clean = false
+	pangolin.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	pangolin.base_width_cubits = 3.0
+	pangolin.base_weight = 1.5
+	pangolin.placement_faith_cost = 1.5
+	pangolin.visual_color = Color(0.45, 0.4, 0.35)
+	species_list.append(pangolin)
+	
+	var anteater = AnimalSpeciesClass.new()
+	anteater.species_name = "Anteater"
+	anteater.description = "以蚂蚁为食的奇特动物。"
+	anteater.is_clean = false
+	anteater.diet = AnimalSpeciesClass.Diet.CARNIVORE
+	anteater.base_width_cubits = 5.0
+	anteater.base_weight = 2.5
+	anteater.placement_faith_cost = 1.8
+	anteater.visual_color = Color(0.45, 0.4, 0.35)
+	species_list.append(anteater)
+	
+	var tapir = AnimalSpeciesClass.new()
+	tapir.species_name = "Tapir"
+	tapir.description = "形状奇特的有蹄动物。"
+	tapir.is_clean = false
+	tapir.base_width_cubits = 5.0
+	tapir.base_weight = 3.5
+	tapir.placement_faith_cost = 1.8
+	tapir.visual_color = Color(0.25, 0.25, 0.3)
+	species_list.append(tapir)

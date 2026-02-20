@@ -206,7 +206,7 @@ func try_place_at_world_pos(world_pos: Vector2, species) -> bool:
 	
 	if best_gy != -1 and _can_place_here(snap_coord, species):
 		var gm = get_node_or_null("/root/GameManager")
-		if gm and gm.call("consume_faith", species.placement_faith_cost):
+		if gm and gm.consume_faith(species.placement_faith_cost):
 			_do_place(snap_coord, species)
 			return true
 	return false
@@ -256,9 +256,9 @@ func remove_animal(coord: Vector2i):
 		visual.queue_free()
 		cage_visuals.erase(Vector2i(start_x, coord.y))
 	var lm = get_node_or_null("/root/LayoutManager")
-	if lm: lm.call("set_species_placed", species, false)
+	if lm: lm.set_species_placed(species, false)
 	var gm = get_node_or_null("/root/GameManager")
-	if gm: gm.call("add_faith", species.placement_faith_cost)
+	if gm: gm.add_faith(species.placement_faith_cost)
 
 func get_path_to_pos(s, t): return PackedVector2Array([s, t])
 
