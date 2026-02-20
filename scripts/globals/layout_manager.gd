@@ -1430,3 +1430,34 @@ func _init_list():
 	marmoset.placement_faith_cost = 0.3
 	marmoset.visual_color = Color(0.5, 0.45, 0.4)
 	species_list.append(marmoset)
+	
+	# ===== 更多独特动物 =====
+	var tamarin = AnimalSpeciesClass.new()
+	tamarin.species_name = "Tamarin"
+	tamarin.description = "狨毛猴，小型灵长类。"
+	tamarin.is_clean = true
+	tamarin.base_width_cubits = 1.5
+	tamarin.base_weight = 0.25
+	tamarin.placement_faith_cost = 0.3
+	tamarin.visual_color = Color(0.55, 0.5, 0.45)
+	species_list.append(tamarin)
+	
+	var colobus = AnimalSpeciesClass.new()
+	colobus.species_name = "Colobus Monkey"
+	colobus.description = "疣猴，黑白相间。"
+	colobus.is_clean = true
+	colobus.base_width_cubits = 3.0
+	colobus.base_weight = 1.0
+	colobus.placement_faith_cost = 0.7
+	colobus.visual_color = Color(0.2, 0.2, 0.25)
+	species_list.append(colobus)
+	
+	var langur = AnimalSpeciesClass.new()
+	langur.species_name = "Langur"
+	langur.description = "叶猴，树栖灵长类。"
+	langur.is_clean = true
+	langur.base_width_cubits = 3.0
+	langur.base_weight = 1.2
+	langur.placement_faith_cost = 0.7
+	langur.visual_color = Color(0.5, 0.45, 0.4)
+	species_list.append(langur)
