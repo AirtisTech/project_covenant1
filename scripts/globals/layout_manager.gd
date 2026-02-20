@@ -1399,3 +1399,34 @@ func _init_list():
 	capuchin.placement_faith_cost = 0.5
 	capuchin.visual_color = Color(0.55, 0.45, 0.4)
 	species_list.append(capuchin)
+	
+	# ===== 更多独特动物 =====
+	var howler = AnimalSpeciesClass.new()
+	howler.species_name = "Howler Monkey"
+	howler.description = "吼猴，声音最响的灵长类。"
+	howler.is_clean = true
+	howler.base_width_cubits = 3.0
+	howler.base_weight = 1.0
+	howler.placement_faith_cost = 0.7
+	howler.visual_color = Color(0.4, 0.3, 0.25)
+	species_list.append(howler)
+	
+	var spider_monkey = AnimalSpeciesClass.new()
+	spider_monkey.species_name = "Spider Monkey"
+	spider_monkey.description = "蜘蛛猴，长臂猿。"
+	spider_monkey.is_clean = true
+	spider_monkey.base_width_cubits = 3.0
+	spider_monkey.base_weight = 0.8
+	spider_monkey.placement_faith_cost = 0.6
+	spider_monkey.visual_color = Color(0.45, 0.35, 0.3)
+	species_list.append(spider_monkey)
+	
+	var marmoset = AnimalSpeciesClass.new()
+	marmoset.species_name = "Marmoset"
+	marmoset.description = "狨猴，最小的灵长类。"
+	marmoset.is_clean = true
+	marmoset.base_width_cubits = 1.5
+	marmoset.base_weight = 0.2
+	marmoset.placement_faith_cost = 0.3
+	marmoset.visual_color = Color(0.5, 0.45, 0.4)
+	species_list.append(marmoset)
