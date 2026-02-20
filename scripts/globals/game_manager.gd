@@ -38,8 +38,8 @@ func start_deluge_phase():
 	
 	# 家人登船
 	var fm = get_node_or_null("/root/FamilyManager")
-	if fm and fm.has_method("_spawn_family"):
-		fm._spawn_family()
+	if fm:
+		fm.spawn_family()
 	
 	# 布局锁定，开启生存循环
 	stats_updated.emit()

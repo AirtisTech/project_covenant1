@@ -100,8 +100,8 @@ func _change_to_next_phase():
 			_start_flood()
 			# 确保家人登船
 			var fm = get_node_or_null("/root/FamilyManager")
-			if fm and fm.has_method("_spawn_family"):
-				fm._spawn_family()
+			if fm:
+				fm.spawn_family()
 			entered_ark.emit()  # 家人登船
 		Phase.DELUGE:
 			current_phase = Phase.DRIFT
@@ -109,7 +109,7 @@ func _change_to_next_phase():
 			_start_drift()
 			# 通知 GameManager 漂流阶段开始
 			var gm = get_node_or_null("/root/GameManager")
-			if gm and gm.has_method("start_drift_phase"):
+			if gm:
 				gm.start_drift_phase()
 		Phase.DRIFT:
 			# 游戏结束或循环

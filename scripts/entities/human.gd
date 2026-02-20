@@ -201,7 +201,32 @@ func _auto_find_work():
 	player_assigned_task = false
 	print("🤖 ", agent_name, " 自动开始工作")
 
+var stairs_target_deck: int = -1  # 楼梯目标层
+var final_target_pos: Vector2 = Vector2.ZERO  # 最终目标位置
+
 func _move_to_target(delta):
+	var ark = get_ark_system()
+	
+	# 检查是否需要使用楼梯
+	if stairs_target_deck != -1 and ark:
+		# 检查是否到达楼梯位置
+		if global_position.distance_to(target_position) < 20.0:
+			# 到达楼梯口，现在上楼/下楼
+			var new_y = ark.get_deck_target_y(stairs_target_deck)
+			target_position = Vector2(target_position.x, new_y)
+			print("🪜 ", agent_name, " 正在爬楼梯到 ", stairs_target_deck, " 层")
+		elif global_position.distance_to(target_position) < 10.0:
+			# 到达楼梯目标层
+			if stairs_target_deck != -1:
+				# 如果还有最终目标，继续前往
+				if final_target_pos != Vector2.ZERO and final_target_pos != target_position:
+					target_position = final_target_pos
+					stairs_target_deck = -1
+					final_target_pos = Vector2.ZERO
+					print("🏃 ", agent_name, " 到达目标层，前往最终位置")
+				else:
+					stairs_target_deck = -1
+	
 	# 计算移动方向
 	var direction = (target_position - global_position).normalized()
 	velocity = direction * move_speed
@@ -212,6 +237,7 @@ func _move_to_target(delta):
 	
 	if global_position.distance_to(target_position) < 10.0:
 		velocity = Vector2.ZERO
+		stairs_target_deck = -1
 		current_state = State.WORKING
 
 func _clamp_to_ark_bounds():
@@ -351,31 +377,71 @@ func get_ark_system():
 		return root.find_child("ArkSystem", true, false)
 	return null
 
+var stairs_target_deck: int = -1  # 楼梯目标层
+var final_target_pos: Vector2 = Vector2.ZERO  # 最终目标位置
+
 func _calculate_path_with_stairs(target_pos: Vector2, from_deck: int, to_deck: int, ark):
+	# 保存最终目标
+	final_target_pos = target_pos
+	stairs_target_deck = to_deck
+	
 	# 找到最近的楼梯
 	var nearest_stairs = _find_nearest_stairs(from_deck, to_deck, ark)
 	
 	if nearest_stairs.x > 0:
-		# 第一步：走到楼梯
+		# 第一步：走到楼梯位置（当前层的楼梯入口）
 		var deck_y = ark.get_deck_target_y(from_deck)
 		target_position = Vector2(nearest_stairs.x, deck_y)
 		
 		# 标记即将使用楼梯
-		print("🪜 ", agent_name, " 使用楼梯从 ", from_deck, " 层到 ", to_deck, " 层")
+		print("🪜 ", agent_name, " 走向楼梯，从 ", from_deck, " 层到 ", to_deck, " 层")
 
-func _find_nearest_stairs(from_deck: int, to_deck: int, ark) -> Vector2:
-	# 找到最近的楼梯
-	var current_pos = global_position
-	var nearest = Vector2(-1, -1)
-	var min_dist = 999999.0
+# 检查是否到达楼梯，如果是则继续上楼/下楼
+func _check_stairs_arrival():
+	if stairs_target_deck == -1:
+		return false
 	
-	for stairs in ark.STAIRS_POSITIONS:
-		if (stairs["from_deck"] == from_deck and stairs["to_deck"] == to_deck) or \
-		   (stairs["from_deck"] == to_deck and stairs["to_deck"] == from_deck):
-			var stairs_x = stairs["x"]
-			var dist = abs(current_pos.x - stairs_x)
-			if dist < min_dist:
-				min_dist = dist
-				nearest = Vector2(stairs_x, stairs["y_bottom"])
+	var ark = get_ark_system()
+	if not ark:
+		return false
 	
-	return nearest
+	# 检查是否到达楼梯位置
+	if global_position.distance_to(target_position) < 20.0:
+		# 到达楼梯，现在上楼/下楼
+		var new_y = ark.get_deck_target_y(stairs_target_deck)
+		target_position = Vector2(global_position.x, new_y)
+		print("🪜 ", agent_name, " 正在爬楼梯到 ", stairs_target_deck, " 层")
+		return true
+	
+	return false
+
+# 在 _move_to_target 中检查是否到达楼梯并继续
+func _move_to_target(delta):
+	# 检查是否需要使用楼梯
+	if stairs_target_deck != -1:
+		if _check_stairs_arrival():
+			# 已到达楼梯，继续移动
+			pass
+		elif global_position.distance_to(target_position) < 10.0:
+			# 到达楼梯后，检查是否还需要继续上楼
+			var current_y = global_position.y
+			var target_y = ark_system.get_deck_target_y(stairs_target_deck)
+			if abs(current_y - target_y) < 10.0:
+				# 已经到达目标层，前往最终目标
+				target_position = final_target_pos
+				stairs_target_deck = -1
+				print("🏃 ", agent_name, " 到达目标层，前往最终位置")
+	
+	# 计算移动方向
+	var direction = (target_position - global_position).normalized()
+	velocity = direction * move_speed
+	move_and_slide()
+	
+	# 限制在方舟范围内
+	_clamp_to_ark_bounds()
+	
+	if global_position.distance_to(target_position) < 10.0:
+		velocity = Vector2.ZERO
+		if stairs_target_deck != -1:
+			stairs_target_deck = -1  # 清除楼梯状态
+		current_state = State.WORKING

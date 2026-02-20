@@ -25,6 +25,9 @@ func _ready():
 	print("👨‍👩‍👦‍👦 Family ready - will board ark when flood begins")
 
 func _spawn_family():
+	spawn_family()
+
+func spawn_family():
 	var ark = get_tree().root.find_child("ArkSystem", true, false)
 	if not ark:
 		return

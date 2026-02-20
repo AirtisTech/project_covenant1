@@ -818,3 +818,44 @@ func _init_list():
 	ferret.placement_faith_cost = 0.4
 	ferret.visual_color = Color(0.55, 0.45, 0.4)
 	species_list.append(ferret)
+	
+	# ===== 更多独特动物 =====
+	var chinchilla = AnimalSpeciesClass.new()
+	chinchilla.species_name = "Chinchilla"
+	chinchilla.description = "柔软的毛皮动物。"
+	chinchilla.is_clean = true
+	chinchilla.base_width_cubits = 1.5
+	chinchilla.base_weight = 0.4
+	chinchilla.placement_faith_cost = 0.3
+	chinchilla.visual_color = Color(0.7, 0.7, 0.75)
+	species_list.append(chinchilla)
+	
+	var gerbil = AnimalSpeciesClass.new()
+	gerbil.species_name = "Gerbil"
+	gerbil.description = "活泼的小型啮齿动物。"
+	gerbil.is_clean = true
+	gerbil.base_width_cubits = 1.0
+	gerbil.base_weight = 0.1
+	gerbil.placement_faith_cost = 0.1
+	gerbil.visual_color = Color(0.8, 0.65, 0.5)
+	species_list.append(gerbil)
+	
+	var hamster = AnimalSpeciesClass.new()
+	hamster.species_name = "Hamster"
+	hamster.description = "可爱的储粮小能手。"
+	hamster.is_clean = true
+	hamster.base_width_cubits = 1.0
+	hamster.base_weight = 0.15
+	hamster.placement_faith_cost = 0.15
+	hamster.visual_color = Color(0.85, 0.7, 0.55)
+	species_list.append(hamster)
+	
+	var guinea_pig = AnimalSpeciesClass.new()
+	guinea_pig.species_name = "Guinea Pig"
+	guinea_pig.description = "温顺的群居小动物。"
+	guinea_pig.is_clean = true
+	guinea_pig.base_width_cubits = 1.5
+	guinea_pig.base_weight = 0.3
+	guinea_pig.placement_faith_cost = 0.25
+	guinea_pig.visual_color = Color(0.7, 0.55, 0.45)
+	species_list.append(guinea_pig)
